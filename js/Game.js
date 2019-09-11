@@ -6,20 +6,49 @@ export default class Game {
 
     this.ctx = canvas.getContext('2d', { alpha: false })
     this.width = canvas.width
-    this.scale = 100// TODO
+    this.scale = 100 // TODO
 
-    this.entities = []
+    this.nCells = 32
+    this.cells = Array(this.nCells).fill(Array(this.nCells).fill(null))
+
     this.egg = Math.random() < 0.03
     this.nTicks = 0
 
     const now = new Date()
     this.epoch = () => (new Date() - now)
 
+    this.addEntity = this.addEntity.bind(this)
+    this.removeEntity = this.removeEntity.bind(this)
+    this.forEachEntity = this.forEachEntity.bind(this)
     this.initCanvas = this.initCanvas.bind(this)
     this.elapsed = this.elapsed.bind(this)
     this.start = this.start.bind(this)
     this.draw = this.draw.bind(this)
     this.drawLaunchScreen = this.drawLaunchScreen.bind(this)
+  }
+
+  addEntity(entity) {
+    if (!entity.x || entity.x >= this.nCells || !entity.y || entity.y >= this.nCells) {
+      throw 'Entity out of bounds: ${entity.id} at (${entity.x}, ${entity.y})'
+    }
+
+    this.cells[entity.x][entity.y] = entity
+  }
+
+  removeEntity(entity) {
+    this.cells[entity.x][entity.y] = null
+  }
+
+  forEachEntity(consumer) {
+    const { cells, nCells } = this
+
+    for (let x = 0; x < nCells; x++) {
+      for (let y = 0; y < nCells; y++) {
+        if (cells[x][y]) {
+          consumer.call(this, cells[x][y])
+        }
+      }
+    }
   }
 
   initCanvas() {
@@ -34,23 +63,25 @@ export default class Game {
 
   start() {
     this.started = true
-    this.entities.push(new TestEntity())
+    this.addEntity(new TestEntity())
   }
 
   draw() {
-    const { ctx, entities, width } = this
-    ctx.clearRect(0, 0, width, width)
+    const { cells, ctx, entities, nCells, width } = this
+
+    ctx.fillStyle = 'white'
+    ctx.fillRect(0, 0, width, width)
 
     // targeting 20 tps; try to recover from up to 10 missed ticks
     let nTicks = Math.min(1, Math.max(10, Math.floor(this.elapsed() / 50)))
     this.nTicks += nTicks
 
     while (nTicks-- > 0) {
-      entities.forEach(e => e.tick())
+      this.forEachEntity(e => e.tick())
     }
 
     if (this.started) {
-      entities.forEach(e => e.draw(ctx))
+      this.forEachEntity(e => e.draw(ctx))
     } else {
       this.drawLaunchScreen()
     }

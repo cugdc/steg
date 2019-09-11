@@ -1,4 +1,4 @@
-import TestEntity from './TestEntity.js'
+import Zombie from './entities/Zombie.js'
 
 export default class Game {
   constructor(canvas) {
@@ -6,7 +6,6 @@ export default class Game {
 
     this.ctx = canvas.getContext('2d', { alpha: false })
     this.width = canvas.width
-    this.scale = 100 // TODO
 
     this.nCells = 32
     this.cells = Array(this.nCells).fill(Array(this.nCells).fill(null))
@@ -19,6 +18,7 @@ export default class Game {
 
     this.addEntity = this.addEntity.bind(this)
     this.removeEntity = this.removeEntity.bind(this)
+    this.moveEntity = this.moveEntity.bind(this)
     this.forEachEntity = this.forEachEntity.bind(this)
     this.nextFrame = this.nextFrame.bind(this)
     this.elapsed = this.elapsed.bind(this)
@@ -28,8 +28,8 @@ export default class Game {
   }
 
   addEntity(entity) {
-    if (!entity.x || entity.x >= this.nCells || !entity.y || entity.y >= this.nCells) {
-      throw 'Entity out of bounds: ${entity.id} at (${entity.x}, ${entity.y})'
+    if (entity.x >= this.nCells || entity.y >= this.nCells) {
+      throw `Entity out of bounds: ${entity.id} at (${entity.x}, ${entity.y})`
     }
 
     this.cells[entity.x][entity.y] = entity
@@ -37,6 +37,15 @@ export default class Game {
 
   removeEntity(entity) {
     this.cells[entity.x][entity.y] = null
+  }
+
+  moveEntity(entity, x, y) {
+    this.removeEntity(entity)
+
+    entity.x = x
+    entity.y = y
+
+    this.addEntity(entity)
   }
 
   forEachEntity(consumer) {
@@ -63,7 +72,7 @@ export default class Game {
 
   start() {
     this.started = true
-    this.addEntity(new TestEntity())
+    this.addEntity(new Zombie())
   }
 
   draw() {
@@ -81,7 +90,11 @@ export default class Game {
     }
 
     if (this.started) {
-      this.forEachEntity(e => e.draw(ctx))
+      this.forEachEntity(e => {
+        ctx.save()
+        e.draw(ctx)
+        ctx.restore()
+      })
     } else {
       this.drawLaunchScreen()
     }

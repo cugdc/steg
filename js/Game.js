@@ -4,6 +4,7 @@ export default class Game {
     this.width = canvas.width
     this.entities = []
     this.started = false
+    this.egg = Math.random() < 0.03
 
     const now = new Date()
     this.elapsed = () => (new Date() - now) // milliseconds
@@ -56,14 +57,20 @@ export default class Game {
     let y = width * 0.5
     ctx.font = '100px monospace'
 
+    let text = 'Zombruh'
+    if (this.egg) {
+      text = 'Super ' + text.replace('ruh', 'io Bros.')
+      ctx.font = '3' + ctx.font.substring(2)
+    }
+
     // Green text
-    ctx.fillStyle = '#696'
-    ctx.fillText("Zombruh", x, y)
+    ctx.fillStyle = !this.egg ? '#696' : '#faa'
+    ctx.fillText(text, x, y)
 
     // Moving outline
     let xOff = 3 * Math.cos(this.elapsed() / 100)
     let yOff = 6 * Math.tan(this.elapsed() / 1000)
     ctx.strokeStyle = '#fff'
-    ctx.strokeText("Zombruh", xOff + x, yOff + y)
+    ctx.strokeText(text, xOff + x, yOff + y)
   }
 }

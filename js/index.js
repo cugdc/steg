@@ -6,7 +6,7 @@ document.getElementById("content").style.display = null
 
 const canvas = document.getElementById('game-view')
 const game = new Game(canvas)
-window.game = game
+window.$game = game
 game.initCanvas()
 
 document.addEventListener('keydown', event => {

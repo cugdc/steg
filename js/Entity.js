@@ -1,5 +1,6 @@
 export default class Entity {
-  constructor(x, y) {
+  constructor(id, x, y) {
+    this.id = id
     this.x = x
     this.y = y
   }

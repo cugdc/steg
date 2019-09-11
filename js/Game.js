@@ -1,15 +1,22 @@
+import TestEntity from './TestEntity.js'
+
 export default class Game {
   constructor(canvas) {
+    this.started = false
+
     this.ctx = canvas.getContext('2d', { alpha: false })
     this.width = canvas.width
+    this.scale = 100// TODO
+
     this.entities = []
-    this.started = false
     this.egg = Math.random() < 0.03
+    this.nTicks = 0
 
     const now = new Date()
-    this.elapsed = () => (new Date() - now) // milliseconds
+    this.epoch = () => (new Date() - now)
 
     this.initCanvas = this.initCanvas.bind(this)
+    this.elapsed = this.elapsed.bind(this)
     this.start = this.start.bind(this)
     this.draw = this.draw.bind(this)
     this.drawLaunchScreen = this.drawLaunchScreen.bind(this)
@@ -19,18 +26,33 @@ export default class Game {
     window.requestAnimationFrame(this.draw)
   }
 
+  elapsed() {
+    const prev = this.__now
+    this.__now = new Date()
+    return prev ? this.__now - prev : 0
+  }
+
   start() {
     this.started = true
+    this.entities.push(new TestEntity())
   }
 
   draw() {
-    const { ctx, width } = this
+    const { ctx, entities, width } = this
     ctx.clearRect(0, 0, width, width)
 
-    if (!this.started) {
-      this.drawLaunchScreen()
+    // targeting 20 tps; try to recover from up to 10 missed ticks
+    let nTicks = Math.min(1, Math.max(10, Math.floor(this.elapsed() / 50)))
+    this.nTicks += nTicks
+
+    while (nTicks-- > 0) {
+      entities.forEach(e => e.tick())
+    }
+
+    if (this.started) {
+      entities.forEach(e => e.draw(ctx))
     } else {
-      // TODO: render game entities
+      this.drawLaunchScreen()
     }
 
     window.requestAnimationFrame(this.draw)
@@ -42,7 +64,7 @@ export default class Game {
     let image = ctx.createImageData(width, width)
     let buf = new Uint32Array(image.data.buffer)
 
-    const stride = 25; // roughly how wide the x-bars are
+    const stride = 25 // roughly how wide the x-bars are
     for (let i = 0; i < buf.length; i += stride) {
       const px = [~0, 0][Math.random() * 2 >> 0] // lol
       for (let j = 0; j < stride && j + i < buf.length; j++) {
@@ -68,8 +90,8 @@ export default class Game {
     ctx.fillText(text, x, y)
 
     // Moving outline
-    let xOff = 3 * Math.cos(this.elapsed() / 100)
-    let yOff = 6 * Math.tan(this.elapsed() / 1000)
+    let xOff = 3 * Math.cos(this.epoch() / 100)
+    let yOff = 6 * Math.tan(this.epoch() / 1000)
     ctx.strokeStyle = '#fff'
     ctx.strokeText(text, xOff + x, yOff + y)
   }

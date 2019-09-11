@@ -69,7 +69,7 @@ export default class Game {
   draw() {
     const { cells, ctx, entities, nCells, width } = this
 
-    ctx.fillStyle = 'white'
+    ctx.fillStyle = 'white' // Not consistent on all browsers (e.g. Firefox)
     ctx.fillRect(0, 0, width, width)
 
     // targeting 20 tps; try to recover from up to 10 missed ticks

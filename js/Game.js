@@ -20,7 +20,7 @@ export default class Game {
     this.addEntity = this.addEntity.bind(this)
     this.removeEntity = this.removeEntity.bind(this)
     this.forEachEntity = this.forEachEntity.bind(this)
-    this.initCanvas = this.initCanvas.bind(this)
+    this.nextFrame = this.nextFrame.bind(this)
     this.elapsed = this.elapsed.bind(this)
     this.start = this.start.bind(this)
     this.draw = this.draw.bind(this)
@@ -51,7 +51,7 @@ export default class Game {
     }
   }
 
-  initCanvas() {
+  nextFrame() {
     window.requestAnimationFrame(this.draw)
   }
 
@@ -86,7 +86,7 @@ export default class Game {
       this.drawLaunchScreen()
     }
 
-    window.requestAnimationFrame(this.draw)
+    this.nextFrame()
   }
 
   drawLaunchScreen() {

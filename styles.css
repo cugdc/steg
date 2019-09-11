@@ -3,11 +3,6 @@ body {
   text-align: center;
 }
 
-#title {
-  font-size: 40px;
-  color: #696;
-}
-
 #game-view {
   border: 3px solid #ddd;
   border-radius: 5px;

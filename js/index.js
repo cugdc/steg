@@ -4,14 +4,14 @@ import { BIND_START_GAME } from './keybinds.js'
 document.getElementById("start-keybind").text = BIND_START_GAME
 document.getElementById("content").style.display = null
 
-let gameStarted = false
+const canvas = document.getElementById('game-view')
+const game = new Game(canvas)
+window.game = game
+game.initCanvas()
 
 document.addEventListener('keydown', event => {
-  if (event.code == BIND_START_GAME && !gameStarted) {
-    gameStarted = true
-
-    const canvas = document.getElementById('game-canvas')
-    new Game(canvas).start()
+  if (event.code == BIND_START_GAME && !game.started) {
+    game.start()
   }
 })
 

@@ -34,8 +34,12 @@ export default class Entity {
 
     if (DRAW_POS_TEXT) {
       ctx.fillStyle = 'black'
-      ctx.font = '15px monospace'
-      ctx.fillText(`${this.x},${this.y}`, x*sc, y*sc + sc)
+      ctx.strokeStyle = 'white'
+      ctx.font = '25px monospace'
+
+      const args = [`${this.x},${this.y}`, x * sc, y * sc + sc]
+      ctx.fillText(...args)
+      ctx.strokeText(...args)
     }
   }
 

@@ -9,7 +9,7 @@ const of = (canvas) => ({
     keyUp: []
   },
   elapsed: 0,
-  epoch: new Date()
+  epoch: Date.now()
 })
 
 
@@ -49,7 +49,7 @@ const drawFrame = (eng) => {
     ctx.restore()
   })
 
-  eng.elapsed = new Date() - eng.epoch
+  eng.elapsed = Date.now() - eng.epoch
 }
 
 export default {

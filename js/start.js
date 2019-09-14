@@ -3,7 +3,14 @@ import Zombie from './objects/Zombie.js'
 import Engine from './Engine.js'
 import { BIND_START_GAME } from './keybinds.js'
 
-export default (eng) => {
+export const getCanvasElement = () => document.getElementById('game-view')
+
+export const onPreInit = () => {
+  document.getElementById("start-keybind").innerHTML = BIND_START_GAME
+  document.getElementById("content").style.display = null
+}
+
+export const start = (eng) => {
   Engine.addObject(eng, LaunchScreen('launch-screen'))
 
   Engine.addKeyUpListener(eng, (eng, code) => {

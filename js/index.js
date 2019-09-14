@@ -1,8 +1,7 @@
 import Engine from './Engine.js'
-import { BIND_ENGINE_SUSPEND, BIND_START_GAME } from './keybinds.js'
-import start from './start.js'
+import * as Impl from './start.js'
 
-const eng = Engine.create(document.getElementById('game-view'))
+const eng = Engine.create(Impl.getCanvasElement())
 
 let frameId
 const drawNextFrame = () => {
@@ -44,8 +43,7 @@ const drawSuspensionGraphic = (ctx) => {
   ctx.fillText(message, oX, oY + height)
 }
 
-document.getElementById("start-keybind").innerHTML = BIND_START_GAME
-document.getElementById("content").style.display = null
+Impl.onPreInit()
 
 document.addEventListener('keyup', ({code}) => {
   if (!eng.suspended) {
@@ -54,7 +52,7 @@ document.addEventListener('keyup', ({code}) => {
 })
 
 document.addEventListener('keydown', ({code}) => {
-  if (code == BIND_ENGINE_SUSPEND) {
+  if (code == 'Escape') {
     toggleEngineSuspension()
     return
   }
@@ -62,6 +60,6 @@ document.addEventListener('keydown', ({code}) => {
   Engine.onKeyDown(eng, (eng, code))
 })
 
-start(eng)
+Impl.start(eng)
 
 drawNextFrame()

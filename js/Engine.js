@@ -42,7 +42,7 @@ const drawFrame = (eng) => {
   ctx.fillStyle = 'white'
   ctx.fillRect(0, 0, width, height)
 
-  objs.filter(o => !o.invisible).forEach(o => {
+  objs.filter(o => !!o.draw).forEach(o => {
     ctx.save()
     o.draw(eng)
     ctx.restore()

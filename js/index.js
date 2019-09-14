@@ -12,6 +12,8 @@ game.nextFrame()
 document.addEventListener('keydown', event => {
   if (event.code == BIND_START_GAME && !game.started) {
     game.start()
+  } else {
+    game.onKeyDown(event.code)
   }
 })
 

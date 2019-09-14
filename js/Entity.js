@@ -44,9 +44,7 @@ export default class Entity {
   }
 
   tick() {
-    if (Math.random() < 0.005) {
-      const next = () => Math.floor(Math.random() * $game.nCells)
-      $game.moveEntity(this, next(), next())
-    }
+    const next = () => Math.floor(Math.random() * $game.nCells)
+    $game.moveEntity(this, next(), next())
   }
 }

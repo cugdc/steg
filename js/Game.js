@@ -1,4 +1,5 @@
 import Zombie from './entities/Zombie.js'
+import * as Key from './keybinds.js'
 
 export default class Game {
   constructor(canvas) {
@@ -7,6 +8,8 @@ export default class Game {
     this.ctx = canvas.getContext('2d', { alpha: false })
     this.width = canvas.width
 
+    this.lastTickTime = new Date()
+
     this.nCells = 32
     this.cells = Array(this.nCells).fill(Array(this.nCells).fill(null))
 
@@ -14,17 +17,23 @@ export default class Game {
     this.nTicks = 0
 
     const now = new Date()
-    this.epoch = () => (new Date() - now)
+    this.elapsed = () => (new Date() - now)
 
-    this.addEntity = this.addEntity.bind(this)
-    this.removeEntity = this.removeEntity.bind(this)
-    this.moveEntity = this.moveEntity.bind(this)
-    this.forEachEntity = this.forEachEntity.bind(this)
-    this.nextFrame = this.nextFrame.bind(this)
-    this.elapsed = this.elapsed.bind(this)
-    this.start = this.start.bind(this)
-    this.draw = this.draw.bind(this)
-    this.drawLaunchScreen = this.drawLaunchScreen.bind(this)
+    ;[
+      'addEntity',
+      'draw',
+      'drawLaunchScreen',
+      'forEachEntity',
+      'moveEntity',
+      'nextFrame',
+      'onKeyDown',
+      'removeEntity',
+      'start',
+    ].map(fn => this[fn] = this[fn].bind(this))
+  }
+
+  onKeyDown(code) {
+    // TODO
   }
 
   addEntity(entity) {
@@ -64,28 +73,28 @@ export default class Game {
     window.requestAnimationFrame(this.draw)
   }
 
-  elapsed() {
-    const prev = this.__now
-    this.__now = new Date()
-    return prev ? this.__now - prev : 0
-  }
-
   start() {
     this.started = true
+
     this.addEntity(new Zombie())
   }
 
   draw() {
-    const { cells, ctx, entities, nCells, width } = this
+    this.frames |= 0
+
+    const {
+      cells,
+      ctx,
+      entities,
+      lastTickTime,
+      nCells,
+      width
+    } = this
 
     ctx.fillStyle = 'white' // Not consistent on all browsers (e.g. Firefox)
     ctx.fillRect(0, 0, width, width)
 
-    // targeting 20 tps; try to recover from up to 10 missed ticks
-    let nTicks = Math.min(1, Math.max(10, Math.floor(this.elapsed() / 50)))
-    this.nTicks += nTicks
-
-    while (nTicks-- > 0) {
+    if (this.frames % 12 == 0) {
       this.forEachEntity(e => e.tick())
     }
 
@@ -99,6 +108,7 @@ export default class Game {
       this.drawLaunchScreen()
     }
 
+    this.frames++
     this.nextFrame()
   }
 
@@ -134,8 +144,8 @@ export default class Game {
     ctx.fillText(text, x, y)
 
     // Moving outline
-    let xOff = 3 * Math.cos(this.epoch() / 100)
-    let yOff = 6 * Math.tan(this.epoch() / 1000)
+    let xOff = 3 * Math.cos(this.elapsed() / 100)
+    let yOff = 6 * Math.tan(this.elapsed() / 1000)
     ctx.strokeStyle = '#fff'
     ctx.strokeText(text, xOff + x, yOff + y)
   }

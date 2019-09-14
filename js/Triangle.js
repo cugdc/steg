@@ -1,9 +1,9 @@
-const of = (a, b, c) => { a, b, c }
+const create = (a, b, c) => { a, b, c }
 
 const contains = (t, p) => (
-  area(t) == area(of(t.a, t.b, p)) +
-             area(of(t.a, t.c, p)) +
-             area(of(t.b, t.c, p))
+  area(t) == area(create(t.a, t.b, p)) +
+             area(create(t.a, t.c, p)) +
+             area(create(t.b, t.c, p))
 )
 
 const area(t) => (
@@ -15,7 +15,7 @@ const area(t) => (
 )
 
 export default {
-  of,
+  create,
   contains,
   area
 }

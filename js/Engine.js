@@ -1,4 +1,4 @@
-const of = (canvas) => ({
+const create = (canvas) => ({
   started: false,
   ctx: canvas.getContext('2d', { alpha: false }),
   width: canvas.width,
@@ -11,7 +11,6 @@ const of = (canvas) => ({
   elapsed: 0,
   epoch: Date.now()
 })
-
 
 const addObject = (eng, obj) => {
   eng.objs.push(obj)
@@ -53,7 +52,7 @@ const drawFrame = (eng) => {
 }
 
 export default {
-  of,
+  create,
   addObject,
   removeObject,
   onKeyUp,

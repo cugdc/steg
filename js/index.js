@@ -4,7 +4,7 @@ import { BIND_START_GAME } from './keybinds.js'
 document.getElementById("start-keybind").innerHTML = BIND_START_GAME
 document.getElementById("content").style.display = null
 
-const eng = Engine.of(document.getElementById('game-view'))
+const eng = Engine.create(document.getElementById('game-view'))
 
 document.addEventListener('keydown', e => Engine.onKeyDown(eng, e.code))
 document.addEventListener('keyup', e => Engine.onKeyUp(eng, e.code))

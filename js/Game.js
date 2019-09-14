@@ -8,8 +8,6 @@ export default class Game {
     this.ctx = canvas.getContext('2d', { alpha: false })
     this.width = canvas.width
 
-    this.lastTickTime = new Date()
-
     this.nCells = 32
     this.cells = Array(this.nCells).fill(Array(this.nCells).fill(null))
 
@@ -86,7 +84,6 @@ export default class Game {
       cells,
       ctx,
       entities,
-      lastTickTime,
       nCells,
       width
     } = this

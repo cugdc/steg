@@ -1,5 +1,5 @@
 const create = (canvas) => ({
-  started: false,
+  suspended: false,
   ctx: canvas.getContext('2d', { alpha: false }),
   width: canvas.width,
   height: canvas.height,
@@ -9,7 +9,8 @@ const create = (canvas) => ({
     keyUp: []
   },
   elapsed: 0,
-  epoch: Date.now()
+  frames: 0,
+  updates: 0
 })
 
 const addObject = (eng, obj) => {
@@ -39,6 +40,15 @@ const addKeyDownListener = (eng, listener) => {
 const drawFrame = (eng) => {
   const { ctx, width, height, objs } = eng
 
+  eng.frames++
+  eng.updates++
+
+  eng.objs.filter(o => !!o.update).forEach(o => o.update(eng))
+
+  if (!eng._epoch) {
+    eng._epoch = Date.now()
+  }
+
   ctx.fillStyle = 'white'
   ctx.fillRect(0, 0, width, height)
 
@@ -48,7 +58,15 @@ const drawFrame = (eng) => {
     ctx.restore()
   })
 
-  eng.elapsed = Date.now() - eng.epoch
+  eng.elapsed = Date.now() - eng._epoch
+}
+
+const suspend = (eng) => {
+  eng.suspended = true
+}
+
+const resume = (eng) => {
+  eng.suspended = false
 }
 
 export default {
@@ -59,5 +77,7 @@ export default {
   onKeyDown,
   addKeyUpListener,
   addKeyDownListener,
-  drawFrame
+  drawFrame,
+  suspend,
+  resume
 }

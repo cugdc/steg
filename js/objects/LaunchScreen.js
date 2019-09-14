@@ -1,4 +1,4 @@
-const draw = function({ ctx, width, height, elapsed }) {
+const draw = function({ ctx, width, height, updates }) {
   let image = ctx.createImageData(width, height)
   let buf = new Uint32Array(image.data.buffer)
 
@@ -28,8 +28,8 @@ const draw = function({ ctx, width, height, elapsed }) {
   ctx.fillText(text, x, y)
 
   // Moving outline
-  let xOff = 3 * Math.cos(elapsed / 100)
-  let yOff = 6 * Math.tan(elapsed / 1000)
+  let xOff = 3 * Math.cos(updates / 10)
+  let yOff = 6 * Math.tan(updates / 100)
   ctx.strokeStyle = '#000'
   ctx.strokeText(text, xOff + x, yOff + y)
 }

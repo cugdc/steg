@@ -1,6 +1,7 @@
 import Engine from './Engine.js'
 import { BIND_START_GAME } from './keybinds.js'
 import LaunchScreen from './objects/LaunchScreen.js'
+import Zombie from './objects/Zombie.js'
 
 document.getElementById("start-keybind").innerHTML = BIND_START_GAME
 document.getElementById("content").style.display = null
@@ -20,6 +21,7 @@ Engine.addObject(eng, LaunchScreen('launch-screen'))
 Engine.addKeyUpListener(eng, (eng, code) => {
   if (code == BIND_START_GAME) {
     Engine.removeObject(eng, 'launch-screen')
+    Engine.addObject(eng, Zombie(eng.width / 2, eng.height / 2))
   }
 })
 

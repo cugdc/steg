@@ -1,11 +1,11 @@
-export const drawLife = (ctx, x, y, rot, color, isAggroCb) => {
+export const drawLife = (ctx, x, y, rot, color, accentColor, isAggroCb) => {
   // TODO: use color var
 
   // Body
   ctx.save()
   {
-    ctx.fillStyle = '#696'
-    ctx.strokeStyle = '#363'
+    ctx.fillStyle = color
+    ctx.strokeStyle = accentColor
     ctx.beginPath()
     ctx.arc(x, y, 15, 0, 2 * Math.PI)
     ctx.fill()
@@ -29,7 +29,8 @@ export const drawLife = (ctx, x, y, rot, color, isAggroCb) => {
       ctx.lineWidth = 2
       ctx.fillStyle = '#141'
     } else {
-      ctx.fillStyle = '#363'
+      ctx.lineWidth = 1
+      ctx.fillStyle = accentColor
     }
 
     ctx.fill()

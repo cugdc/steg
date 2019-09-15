@@ -13,7 +13,7 @@ const draw = function({ ctx, updates }) {
     drawTriangle(ctx, this.look, c)
   }
 
-  drawLife(ctx, x, y, rot, '#696', isAggro)
+  drawLife(ctx, x, y, rot, '#696', '#363', isAggro)
 }
 
 const createLookTri = (x, y, rot) => {

@@ -1,3 +1,4 @@
+import Engine from '../Engine.js'
 import Triangle from '../Triangle.js'
 import { drawLife, drawTriangle } from '../RenderUtils.js'
 
@@ -6,14 +7,12 @@ const DRAW_LOOK_TRI = false
 const draw = function({ ctx, updates }) {
   const { x, y, rot } = this
 
-  const isAggro = () => (this.canSee.length > 0)
-
   if (DRAW_LOOK_TRI) {
-    const c = () => (isAggro() ? '#f00' : '#ccc')
+    const c = () => (this.aggro ? '#f00' : '#ccc')
     drawTriangle(ctx, this.look, c)
   }
 
-  drawLife(ctx, x, y, rot, '#9cc', '#200', isAggro)
+  drawLife(ctx, x, y, rot, '#9cc', '#200', () => this.aggro)
 }
 
 const createLookTri = (x, y, rot) => {
@@ -53,8 +52,12 @@ const update = function(eng) {
 
   this.look = createLookTri(x, y, rot)
 
-  this.canSee = eng.objs.filter(o => (o.human &&
-    Triangle.contains(this.look, [o.x, o.y], 0.05)))
+  const player = Engine.getObject(eng, 'player')
+  this.aggro = Triangle.contains(this.look, [player.x, player.y], 0.05)
+
+  if (this.aggro) {
+    this.rot = Math.atan2(player.y - this.y, player.x - this.x)
+  }
 }
 
 export default (x, y) => ({
@@ -62,7 +65,7 @@ export default (x, y) => ({
   y,
   rot: Math.random() * 2*Math.PI,
   look: null,
-  canSee: [],
+  aggro: false,
   draw,
   update
 })

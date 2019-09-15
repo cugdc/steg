@@ -58,10 +58,16 @@ document.addEventListener('keydown', ({code}) => {
     return
   }
 
-  Engine.onKeyDown(eng, (eng, code))
+  if (!eng.suspended) {
+    Engine.onKeyDown(eng, (eng, code))
+  }
 })
 
 canvas.addEventListener('mousemove', ({ clientX, clientY }) => {
+  if (eng.suspended) {
+    return
+  }
+
   const canvasBounds = canvas.getBoundingClientRect()
 
   let x = clientX - canvasBounds.left

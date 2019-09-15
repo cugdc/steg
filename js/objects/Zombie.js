@@ -1,7 +1,7 @@
 import Triangle from '../Triangle.js'
 import { drawLife, drawTriangle } from '../RenderUtils.js'
 
-const DRAW_LOOK_TRI = true
+const DRAW_LOOK_TRI = false
 
 const draw = function({ ctx, updates }) {
   const { x, y, rot } = this

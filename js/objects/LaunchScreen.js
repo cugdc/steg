@@ -34,8 +34,7 @@ const draw = function({ ctx, width, height, updates }) {
   ctx.strokeText(text, xOff + x, yOff + y)
 }
 
-export default (id) => ({
-  id,
+export default () => ({
   egg: Math.random() < 0.03,
   draw
 })

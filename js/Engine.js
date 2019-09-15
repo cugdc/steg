@@ -13,12 +13,15 @@ const create = (canvas) => ({
   updates: 0
 })
 
-const addObject = (eng, obj) => {
+const getObject = (eng, id) => (eng.objs.find(o => o.$eng$id == id))
+
+const addObject = (eng, obj, id) => {
+  obj.$eng$id = id
   eng.objs.push(obj)
 }
 
 const removeObject = (eng, id) => {
-  eng.objs = eng.objs.filter(o => (o === id || o.id != id))
+  eng.objs = eng.objs.filter(o => (o === id || o.$eng$id != id))
 }
 
 const onKeyUp = (eng, code) => {
@@ -71,6 +74,7 @@ const resume = (eng) => {
 
 export default {
   create,
+  getObject,
   addObject,
   removeObject,
   onKeyUp,

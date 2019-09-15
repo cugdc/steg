@@ -57,7 +57,7 @@ const drawFrame = (eng) => {
     eng._epoch = Date.now()
   }
 
-  ctx.fillStyle = 'white'
+  ctx.fillStyle = '#171717'
   ctx.fillRect(0, 0, frame.w(), frame.h())
 
   ctx.save()

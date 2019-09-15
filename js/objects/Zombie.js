@@ -9,11 +9,11 @@ const draw = function({ ctx, updates }) {
   const isAggro = () => (this.canSee.length > 0)
 
   if (DRAW_LOOK_TRI) {
-    const c = () => (isAggro() ? '#700' : '#ccc')
+    const c = () => (isAggro() ? '#f00' : '#ccc')
     drawTriangle(ctx, this.look, c)
   }
 
-  drawLife(ctx, x, y, rot, '#696', '#363', isAggro)
+  drawLife(ctx, x, y, rot, '#9cc', '#200', isAggro)
 }
 
 const createLookTri = (x, y, rot) => {

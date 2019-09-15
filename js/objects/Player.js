@@ -1,7 +1,7 @@
 import { drawLife } from '../RenderUtils.js'
 
 const draw = function({ ctx }) {
-  drawLife(ctx, this.x, this.y, this.rot, '#aaf', '#88d')
+  drawLife(ctx, this.x, this.y, this.rot, '#b42', '#9299')
 }
 
 const update = function(eng) {

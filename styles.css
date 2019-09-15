@@ -1,16 +1,19 @@
 body {
   font-family: monospace;
   text-align: center;
+  background: #171717;
+  color: #eee;
 }
 
 #game-view {
-  border: 2px solid #ddd;
+  border: 2px solid #e75;
   cursor: none;
+  margin-top: 20px;
 }
 
 .keybind {
   border: 2px dashed #666;
   border-radius: 10px;
-  color: #696;
+  color: #e75;
   padding: 3px;
 }

@@ -1,30 +1,49 @@
 import Triangle from '../Triangle.js'
 
+const DRAW_LOOK_TRI = false
+
 const draw = function({ ctx, updates }) {
   const { x, y, rot, look } = this
 
-  // Look tri
-  ctx.strokeStyle = this.canSee.length > 0 ? '#700' : '#aaa'
-  ctx.lineWidth = 2
-  ctx.beginPath()
-  ctx.moveTo(look.a[0], look.a[1])
-  ctx.lineTo(look.b[0], look.b[1])
-  ctx.lineTo(look.c[0], look.c[1])
-  ctx.closePath()
-  ctx.stroke()
+  if (DRAW_LOOK_TRI) {
+    ctx.save()
+    {
+      ctx.strokeStyle = this.canSee.length > 0 ? '#700' : '#ccc'
+      ctx.lineWidth = 2
+      ctx.beginPath()
+      ctx.moveTo(look.a[0], look.a[1])
+      ctx.lineTo(look.b[0], look.b[1])
+      ctx.lineTo(look.c[0], look.c[1])
+      ctx.closePath()
+      ctx.stroke()
+    }
+    ctx.restore()
+  }
 
   // Zombie body
   ctx.fillStyle = '#696'
+  ctx.strokeStyle = '#363'
   ctx.beginPath()
   ctx.arc(x, y, 15, 0, 2 * Math.PI)
   ctx.fill()
+  ctx.stroke()
 
-  // Zombie eye TODO: needs to rotate with zombie
-  ctx.fillStyle = '#364'
+  // Zombie eye
+  ctx.strokeStyle = '#fff'
   ctx.beginPath()
-  ctx.arc(x, y + 5, 4, 0, 2 * Math.PI)
-  ctx.fill()
+  const r = 4 // eye radius
+  const d = 9 // distance from body
+  ctx.arc(x + (r + d) * Math.cos(rot), y + (r + d) * Math.sin(rot), r, 0, 2 * Math.PI)
 
+  if (this.canSee.length > 0) {
+    ctx.lineWidth = 2
+    ctx.fillStyle = '#141'
+  } else {
+    ctx.fillStyle = '#363'
+  }
+
+  ctx.fill()
+  ctx.stroke()
 }
 
 const createLookTri = (x, y, rot) => {
@@ -66,8 +85,7 @@ const update = function(eng) {
 
   this.canSee = eng.objs.filter(o => {
     if (o !== this && 'x' in o && 'y' in o) {
-      let r = Triangle.contains(this.look, [o.x, o.y], 0.05)
-      return r
+      return Triangle.contains(this.look, [o.x, o.y], 0.05)
     }
   })
 }

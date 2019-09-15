@@ -1,16 +1,20 @@
-const create = (a, b, c) => { a, b, c }
+const create = (a, b, c) => ({a, b, c})
 
-const contains = (t, p) => (
-  area(t) == area(create(t.a, t.b, p)) +
-             area(create(t.a, t.c, p)) +
-             area(create(t.b, t.c, p))
-)
+const contains = (t, p, err) => {
+  const sumArea = area(create(t.a, t.b, p)) +
+                  area(create(t.a, t.c, p)) +
+                  area(create(t.b, t.c, p))
 
-const area(t) => (
+  const delta = Math.abs(area(t) - sumArea)
+
+  return delta < err
+}
+
+const area = t => (
   Math.abs(
-    t.a.x * (t.b.y - t.c.y) +
-    t.b.x * (t.c.y - t.a.y) +
-    t.c.x * (t.a.y - t.b.y)
+    t.a[0] * (t.b[1] - t.c[1]) +
+    t.b[0] * (t.c[1] - t.a[1]) +
+    t.c[0] * (t.a[1] - t.b[1])
   ) / 2
 )
 

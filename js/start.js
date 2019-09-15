@@ -15,10 +15,16 @@ export const start = (eng) => {
 
   Engine.addKeyUpListener(eng, (eng, code) => {
     switch (code) {
-      case BIND_START_GAME:
+      case BIND_START_GAME: {
         Engine.removeObject(eng, 'launch-screen')
-        Engine.addObject(eng, Zombie(eng.width / 2, eng.height / 2))
+
+        let i = 10
+        while (i --> 0) {
+          Engine.addObject(eng, Zombie(eng.width / 2 + i * 10 - 50, eng.height / 2 + i * 10 - 50))
+        }
+
         break
+      }
     }
   })
 }

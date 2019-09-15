@@ -1,7 +1,8 @@
 import Engine from './Engine.js'
 import * as Impl from './start.js'
 
-const eng = Engine.create(Impl.getCanvasElement(), 500, 500)
+const canvas = Impl.getCanvasElement()
+const eng = Engine.create(canvas, 500, 500)
 
 let frameId
 const drawNextFrame = () => {
@@ -58,6 +59,18 @@ document.addEventListener('keydown', ({code}) => {
   }
 
   Engine.onKeyDown(eng, (eng, code))
+})
+
+canvas.addEventListener('mousemove', ({ clientX, clientY }) => {
+  const canvasBounds = canvas.getBoundingClientRect()
+
+  let x = clientX - canvasBounds.left
+  let y = clientY - canvasBounds.top
+
+  x *= eng.width / canvas.width
+  y *= eng.height / canvas.height
+
+  Engine.onMouseMove(eng, x, y)
 })
 
 Impl.start(eng)

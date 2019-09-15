@@ -10,6 +10,10 @@ const update = function(eng) {
   this.y += this.speed * Math.sin(this.rot)
 }
 
+const onMouseMove = function(x, y) {
+  this.rot = Math.atan2(y - this.y, x - this.x)
+}
+
 const setSpeed = function(speed) {
   this.speed = speed
 }
@@ -26,6 +30,7 @@ export default (x, y) => ({
   rotSpeed: 0,
   draw,
   update,
+  onMouseMove,
   setSpeed,
   setRotSpeed,
   human: true

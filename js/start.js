@@ -1,6 +1,7 @@
 import LaunchScreen from './objects/LaunchScreen.js'
 import Zombie from './objects/Zombie.js'
 import Player from './objects/Player.js'
+import Crosshair from './objects/Crosshair.js'
 import Engine from './Engine.js'
 import * as Keys from './keybinds.js'
 
@@ -25,6 +26,7 @@ export const start = (eng) => {
     switch (code) {
       case Keys.BIND_MOVE:
         Engine.getObject(eng, 'player').setSpeed(0)
+        break
       case Keys.BIND_TURN_CW:
       case Keys.BIND_TURN_CCW:
         Engine.getObject(eng, 'player').setRotSpeed(0)
@@ -60,4 +62,5 @@ const initializeGame = eng => {
   }
 
   Engine.addObject(eng, Player(eng.width / 2, eng.height / 2), 'player')
+  Engine.addObject(eng, Crosshair(eng.width / 2, eng.height / 2), 'crosshair')
 }

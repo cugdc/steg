@@ -33,6 +33,10 @@ const onKeyDown = (eng, code) => {
   eng.listeners.keyDown.forEach(l => l.call(null, eng, code))
 }
 
+const onMouseMove = (eng, x, y) => {
+  eng.objs.filter(o => !!o.onMouseMove).forEach(o => o.onMouseMove(x, y))
+}
+
 const addKeyUpListener = (eng, listener) => {
   eng.listeners.keyUp.push(listener)
 }
@@ -83,6 +87,7 @@ export default {
   removeObject,
   onKeyUp,
   onKeyDown,
+  onMouseMove,
   addKeyUpListener,
   addKeyDownListener,
   drawFrame,

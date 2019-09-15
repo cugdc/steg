@@ -6,6 +6,7 @@ body {
 #game-view {
   border: 3px solid #ddd;
   border-radius: 5px;
+  cursor: none;
 }
 
 .keybind {

@@ -18,7 +18,7 @@
   <div id="content" style="display:none;">
     <canvas id="game-view" width="512" height="512"></canvas>
     <p>Press <span id="start-keybind" class="keybind">[unknown]</span> to start!</p>
-    <select onchange="resizeGameView(this.value)">
+    <select autocomplete="off" onchange="resizeGameView(this.value)">
       <option value="512">512x512 (default)</option>
       <option value="768">768x768</option>
       <option value="1024">1024x1024</option>

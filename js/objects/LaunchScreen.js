@@ -1,5 +1,5 @@
-const draw = function({ ctx, width, height, updates }) {
-  let image = ctx.createImageData(width, height)
+const draw = function({ ctx, frame, width, height, updates }) {
+  let image = ctx.createImageData(frame.w(), frame.h())
   let buf = new Uint32Array(image.data.buffer)
 
   const stride = 25 // roughly how wide the x-bars are

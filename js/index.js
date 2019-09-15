@@ -1,7 +1,7 @@
 import Engine from './Engine.js'
 import * as Impl from './start.js'
 
-const eng = Engine.create(Impl.getCanvasElement())
+const eng = Engine.create(Impl.getCanvasElement(), 500, 500)
 
 let frameId
 const drawNextFrame = () => {

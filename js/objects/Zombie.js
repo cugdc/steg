@@ -1,49 +1,19 @@
 import Triangle from '../Triangle.js'
+import { drawLife, drawTriangle } from '../RenderUtils.js'
 
-const DRAW_LOOK_TRI = false
+const DRAW_LOOK_TRI = true
 
 const draw = function({ ctx, updates }) {
-  const { x, y, rot, look } = this
+  const { x, y, rot } = this
+
+  const isAggro = () => (this.canSee.length > 0)
 
   if (DRAW_LOOK_TRI) {
-    ctx.save()
-    {
-      ctx.strokeStyle = this.canSee.length > 0 ? '#700' : '#ccc'
-      ctx.lineWidth = 2
-      ctx.beginPath()
-      ctx.moveTo(look.a[0], look.a[1])
-      ctx.lineTo(look.b[0], look.b[1])
-      ctx.lineTo(look.c[0], look.c[1])
-      ctx.closePath()
-      ctx.stroke()
-    }
-    ctx.restore()
+    const c = () => (isAggro() ? '#700' : '#ccc')
+    drawTriangle(ctx, this.look, c)
   }
 
-  // Zombie body
-  ctx.fillStyle = '#696'
-  ctx.strokeStyle = '#363'
-  ctx.beginPath()
-  ctx.arc(x, y, 15, 0, 2 * Math.PI)
-  ctx.fill()
-  ctx.stroke()
-
-  // Zombie eye
-  ctx.strokeStyle = '#fff'
-  ctx.beginPath()
-  const r = 4 // eye radius
-  const d = 9 // distance from body
-  ctx.arc(x + (r + d) * Math.cos(rot), y + (r + d) * Math.sin(rot), r, 0, 2 * Math.PI)
-
-  if (this.canSee.length > 0) {
-    ctx.lineWidth = 2
-    ctx.fillStyle = '#141'
-  } else {
-    ctx.fillStyle = '#363'
-  }
-
-  ctx.fill()
-  ctx.stroke()
+  drawLife(ctx, x, y, rot, '#696', isAggro)
 }
 
 const createLookTri = (x, y, rot) => {
@@ -83,11 +53,8 @@ const update = function(eng) {
 
   this.look = createLookTri(x, y, rot)
 
-  this.canSee = eng.objs.filter(o => {
-    if (o !== this && 'x' in o && 'y' in o) {
-      return Triangle.contains(this.look, [o.x, o.y], 0.05)
-    }
-  })
+  this.canSee = eng.objs.filter(o => (o.human &&
+    Triangle.contains(this.look, [o.x, o.y], 0.05)))
 }
 
 export default (x, y) => ({

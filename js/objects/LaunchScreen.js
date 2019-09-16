@@ -26,7 +26,7 @@ const draw = function({ ctx, frame, width, height, updates }) {
 
   const magic = Math.floor(765 + 3 * Math.sin(updates / 30))
   const color = (i, k) => Math.floor(i * (magic + k) * 0x7f7f7f7f)
-  const bias = Math.sin(updates / 60)
+  const bias = (updates % 60) / 30 - 1
 
   for (let i = 0; i < buf.length; i++) {
     buf[i] = blend(color(i, 0), blend(color(i, -1), color(i, 1), bias), bias)

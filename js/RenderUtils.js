@@ -1,6 +1,4 @@
 export const drawLife = (ctx, x, y, rot, color, accentColor, isAggroCb) => {
-  // TODO: use color var
-
   // Body
   ctx.save()
   {

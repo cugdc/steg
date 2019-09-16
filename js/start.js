@@ -31,6 +31,8 @@ export const start = (eng) => {
       case Keys.BIND_TURN_CCW:
         Engine.getObject(eng, 'player').setRotSpeed(0)
         break
+      case 'KeyP':
+        Engine.addObject(eng, Zombie(250,250))
     }
   })
 

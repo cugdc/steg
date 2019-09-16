@@ -3,6 +3,7 @@ import Zombie from './objects/Zombie.js'
 import Player from './objects/Player.js'
 import Crosshair from './objects/Crosshair.js'
 import Engine from './Engine.js'
+import Boulder from './objects/Boulder.js'
 import * as Keys from './keybinds.js'
 
 export const getCanvasElement = () => document.getElementById('game-view')
@@ -31,8 +32,12 @@ export const start = (eng) => {
       case Keys.BIND_TURN_CCW:
         Engine.getObject(eng, 'player').setRotSpeed(0)
         break
-      case 'KeyP':
+      case 'KeyZ':
         Engine.addObject(eng, Zombie(250,250))
+        break
+      case 'KeyB':
+        Engine.addObject(eng, Boulder(200, 200, 50, 8), 'boulder')
+        break
     }
   })
 

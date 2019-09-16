@@ -40,12 +40,28 @@ export const drawLife = (ctx, x, y, rot, color, accentColor, isAggroCb) => {
 export const drawTriangle = (ctx, t, getColor) => {
   ctx.save()
   {
-    ctx.strokeStyle = getColor()
-    ctx.lineWidth = 2
+    ctx.strokeStyle = getColor() // TODO: why is this a function?
+    ctx.lineWidth = 2 // TODO: caller should set this
     ctx.beginPath()
     ctx.moveTo(t.a[0], t.a[1])
     ctx.lineTo(t.b[0], t.b[1])
     ctx.lineTo(t.c[0], t.c[1])
+    ctx.closePath()
+    ctx.stroke()
+  }
+  ctx.restore()
+}
+
+export const strokeConvexPoly = (ctx, poly) => {
+  const vs = poly.vertices
+
+  ctx.save()
+  {
+    ctx.beginPath()
+    ctx.moveTo(vs[0][0], vs[0][1])
+    for (let i = 1; i < vs.length; i++) {
+      ctx.lineTo(vs[i][0], vs[i][1])
+    }
     ctx.closePath()
     ctx.stroke()
   }

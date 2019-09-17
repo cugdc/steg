@@ -1,3 +1,5 @@
+import Engine from '../Engine.js'
+
 const draw = function({ ctx }) {
   ctx.strokeStyle = '#444'
   ctx.lineWidth = 1
@@ -20,9 +22,15 @@ const onMouseMove = function(x, y) {
   this.y = y
 }
 
+const update = function(eng) {
+  let b = Engine.getObject(eng, 'boulder')
+  b.test(this.x, this.y)
+}
+
 export default (x, y) => ({
   x,
   y,
   onMouseMove,
+  update,
   draw
 })

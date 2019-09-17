@@ -1,4 +1,3 @@
-import Triangle from './Triangle.js'
 
 const generate = (x, y, r, n) => {
   const angles = []

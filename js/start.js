@@ -35,9 +35,6 @@ export const start = (eng) => {
       case 'KeyZ':
         Engine.addObject(eng, Zombie(250,250))
         break
-      case 'KeyB':
-        Engine.addObject(eng, Boulder(200, 200, 50, 8), 'boulder')
-        break
     }
   })
 
@@ -70,4 +67,7 @@ const initializeGame = eng => {
 
   Engine.addObject(eng, Player(eng.width / 2, eng.height / 2), 'player')
   Engine.addObject(eng, Crosshair(eng.width / 2, eng.height / 2), 'crosshair')
+
+
+  Engine.addObject(eng, Boulder(200, 200, 50, 8), 'boulder')
 }

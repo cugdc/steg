@@ -1,12 +1,13 @@
 import ConvexPoly from '../ConvexPoly.js'
-import { drawLife, strokeConvexPoly } from '../RenderUtils.js'
+import { drawLife, createConvexPolyPath } from '../RenderUtils.js'
 
 const draw = function({ ctx }) {
   drawLife(ctx, this.x, this.y, this.rot, '#b42', '#9299')
 
   ctx.lineWidth = 2
   ctx.strokeStyle = this.collides ? 'green' : 'orange'
-  strokeConvexPoly(ctx, this.collider)
+  createConvexPolyPath(ctx, this.collider)
+  ctx.stroke()
   this.collides = false // TODO: hack, needs a postUpdate() or postDraw() function...
 }
 
@@ -31,7 +32,7 @@ const setRotSpeed = function(speed) {
 }
 
 const onCollision = function(what) {
-  this.collides = true // TODO remove
+  this.collides = what.$eng$id == 'boulder' // TODO remove
 }
 
 export default (x, y) => ({

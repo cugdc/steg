@@ -52,18 +52,15 @@ export const drawTriangle = (ctx, t, getColor) => {
   ctx.restore()
 }
 
-export const strokeConvexPoly = (ctx, poly) => {
+export const createConvexPolyPath = (ctx, poly) => {
   const vs = poly.vertices
 
-  ctx.save()
-  {
-    ctx.beginPath()
-    ctx.moveTo(vs[0][0], vs[0][1])
-    for (let i = 1; i < vs.length; i++) {
-      ctx.lineTo(vs[i][0], vs[i][1])
-    }
-    ctx.closePath()
-    ctx.stroke()
+  ctx.beginPath()
+  ctx.moveTo(vs[0][0], vs[0][1])
+
+  for (let i = 1; i < vs.length; i++) {
+    ctx.lineTo(vs[i][0], vs[i][1])
   }
-  ctx.restore()
+
+  ctx.closePath()
 }

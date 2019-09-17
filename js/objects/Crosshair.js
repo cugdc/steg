@@ -22,15 +22,9 @@ const onMouseMove = function(x, y) {
   this.y = y
 }
 
-const update = function(eng) {
-  let b = Engine.getObject(eng, 'boulder')
-  b.test(this.x, this.y)
-}
-
 export default (x, y) => ({
   x,
   y,
   onMouseMove,
-  update,
   draw
 })

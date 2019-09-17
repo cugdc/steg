@@ -1,7 +1,7 @@
 import Engine from '../Engine.js'
 import Triangle from '../Triangle.js'
 import ConvexPoly from '../ConvexPoly.js'
-import { drawLife, drawTriangle, strokeConvexPoly } from '../RenderUtils.js'
+import { drawLife, drawTriangle, createConvexPolyPath } from '../RenderUtils.js'
 
 const DRAW_LOOK_TRI = false
 
@@ -17,7 +17,8 @@ const draw = function({ ctx, updates }) {
 
   ctx.lineWidth = 2
   ctx.strokeStyle = 'white'
-  strokeConvexPoly(ctx, this.collider)
+  createConvexPolyPath(ctx, this.collider)
+  ctx.stroke()
 }
 
 const createLookTri = (x, y, rot) => {

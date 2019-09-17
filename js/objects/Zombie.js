@@ -1,6 +1,7 @@
 import Engine from '../Engine.js'
 import Triangle from '../Triangle.js'
-import { drawLife, drawTriangle } from '../RenderUtils.js'
+import ConvexPoly from '../ConvexPoly.js'
+import { drawLife, drawTriangle, strokeConvexPoly } from '../RenderUtils.js'
 
 const DRAW_LOOK_TRI = false
 
@@ -13,6 +14,10 @@ const draw = function({ ctx, updates }) {
   }
 
   drawLife(ctx, x, y, rot, '#9cc', '#200', () => this.aggro)
+
+  ctx.lineWidth = 2
+  ctx.strokeStyle = 'white'
+  strokeConvexPoly(ctx, this.collider)
 }
 
 const createLookTri = (x, y, rot) => {
@@ -50,6 +55,8 @@ const update = function(eng) {
   this.x += d * Math.cos(rot)
   this.y += d * Math.sin(rot)
 
+  ConvexPoly.translate(this.collider, this.x, this.y)
+
   this.look = createLookTri(x, y, rot)
 
   const player = Engine.getObject(eng, 'player')
@@ -63,6 +70,7 @@ const update = function(eng) {
 export default (x, y) => ({
   x,
   y,
+  collider: ConvexPoly.regular(x, y, 20, 6),
   rot: Math.random() * 2*Math.PI,
   look: null,
   aggro: false,

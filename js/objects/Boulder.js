@@ -16,7 +16,7 @@ const test = function(x, y) {
 }
 
 export default (x, y, r, n) => ({
-  shape: ConvexPoly.generate(x, y, r, n),
+  shape: ConvexPoly.random(x, y, r, n),
   color: 'green',
   draw,
   test

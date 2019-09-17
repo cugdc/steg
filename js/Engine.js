@@ -1,3 +1,5 @@
+import ConvexPoly from './ConvexPoly.js'
+
 const create = (canvas, width, height) => ({
   suspended: false,
   ctx: canvas.getContext('2d', { alpha: false }),
@@ -51,6 +53,7 @@ const drawFrame = (eng) => {
   eng.frames++
   eng.updates++
 
+  _checkCollisions(eng)
   eng.objs.filter(o => !!o.update).forEach(o => o.update(eng))
 
   if (!eng._epoch) {
@@ -78,6 +81,51 @@ const suspend = (eng) => {
 
 const resume = (eng) => {
   eng.suspended = false
+}
+
+const _checkCollisions = (eng) => {
+  for (let i = 0; i < eng.objs.length; i++) {
+    const o1 = eng.objs[i]
+    if (!o1.collider) {
+      continue
+    }
+
+    for (let j = i + 1; j < eng.objs.length; j++) {
+      const o2 = eng.objs[j]
+      if (!o2.collider) {
+        continue
+      }
+
+      _testCollision(o1, o2)
+    }
+  }
+}
+
+const _testCollision = (o1, o2) => {
+  const c1 = o1.collider
+  const c2 = o2.collider
+
+  const dx = c2.x - c1.x
+  const dy = c2.y - c1.y
+  const radiiSum = c1.radius + c2.radius
+
+  const distSq = dx * dx + dy * dy
+  const radiiSq = radiiSum * radiiSum
+
+  // skip polygon intersection check if not within each other's radius
+  if (distSq > radiiSq) {
+    return
+  }
+
+  if (ConvexPoly.intersects(c1, c2)) {
+    if (o1.onCollision) {
+      o1.onCollision(o2)
+    }
+
+    if (o2.onCollision) {
+      o2.onCollision(o1)
+    }
+  }
 }
 
 export default {

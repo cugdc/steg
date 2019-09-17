@@ -2,10 +2,13 @@ import ConvexPoly from '../ConvexPoly.js'
 import { createConvexPolyPath } from '../RenderUtils.js'
 
 const draw = function({ ctx }) {
-  ctx.lineWidth = 4
-  ctx.strokeStyle = '#a33'
-  ctx.fillStyle = '#930'
   createConvexPolyPath(ctx, this.collider)
+
+  ctx.lineWidth = 4
+  ctx.strokeStyle = '#e77'
+  ctx.stroke()
+
+  ctx.fillStyle = '#930'
   ctx.fill()
 }
 

@@ -11,6 +11,13 @@ body {
   margin-top: 20px;
 }
 
+#debug-ui {
+  position: fixed;
+  text-align: left;
+  top: 10px;
+  left: 10px;
+}
+
 .keybind {
   border: 2px dashed #666;
   border-radius: 10px;

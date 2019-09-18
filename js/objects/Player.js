@@ -1,12 +1,15 @@
 import ConvexPoly from '../ConvexPoly.js'
 import { drawLife, createConvexPolyPath } from '../RenderUtils.js'
 
-const DRAW_COLLIDER = false
+let dbg = { DRAW_COLLIDER: false }
+export const playerDbgToggle = prop => {
+  dbg[prop] = !dbg[prop]
+}
 
 const draw = function({ ctx }) {
   drawLife(ctx, this.x, this.y, this.rot, '#b42', '#9299')
 
-  if (DRAW_COLLIDER) {
+  if (dbg.DRAW_COLLIDER) {
     ctx.lineWidth = 2
     ctx.strokeStyle = (this.collides && this.collides.startsWith('boulder')) ?
       'green' :

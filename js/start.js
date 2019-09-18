@@ -1,6 +1,6 @@
 import LaunchScreen from './objects/LaunchScreen.js'
-import Zombie from './objects/Zombie.js'
-import Player from './objects/Player.js'
+import Zombie, { dbgToggle } from './objects/Zombie.js'
+import Player, { playerDbgToggle } from './objects/Player.js'
 import Crosshair from './objects/Crosshair.js'
 import Engine from './Engine.js'
 import Boulder from './objects/Boulder.js'
@@ -9,8 +9,24 @@ import * as Keys from './keybinds.js'
 export const getCanvasElement = () => document.getElementById('game-view')
 
 export const onPreInit = () => {
-  document.getElementById("start-keybind").innerHTML = Keys.BIND_START_GAME
-  document.getElementById("content").style.display = null
+  document.getElementById('start-keybind').innerHTML = Keys.BIND_START_GAME
+  document.getElementById('content').style.display = null
+
+  document.getElementById('dbg-player-coll').onclick = e => {
+    playerDbgToggle('DRAW_COLLIDER')
+  }
+
+  document.getElementById("dbg-zombie-coll").onclick = e => {
+    dbgToggle('DRAW_COLLIDER')
+  }
+
+  document.getElementById('dbg-zombie-cone').onclick = e => {
+    dbgToggle('DRAW_LOOK_TRI')
+  }
+
+  document.getElementById('dbg-zombie-tree').onclick = e => {
+    dbgToggle('DRAW_TREE')
+  }
 }
 
 let initialized

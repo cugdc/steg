@@ -4,28 +4,34 @@ import Triangle from '../Triangle.js'
 import ConvexPoly from '../ConvexPoly.js'
 import { drawLife, drawTriangle, createConvexPolyPath } from '../RenderUtils.js'
 
-const DRAW_LOOK_TRI = false
-const DRAW_COLLIDER = false
-const DRAW_TREE = true
+let dbg = {
+  DRAW_LOOK_TRI: false,
+  DRAW_COLLIDER: false,
+  DRAW_TREE: false
+}
+
+export const dbgToggle = prop => {
+  dbg[prop] = !dbg[prop]
+}
 
 const draw = function({ ctx, updates }) {
   const { x, y, rot } = this
 
-  if (DRAW_LOOK_TRI) {
+  if (dbg.DRAW_LOOK_TRI) {
     const c = () => (this.aggro ? '#f00' : '#ccc')
     drawTriangle(ctx, this.look, c)
   }
 
   drawLife(ctx, x, y, rot, '#9cc', '#200', () => this.aggro)
 
-  if (DRAW_COLLIDER) {
+  if (dbg.DRAW_COLLIDER) {
     ctx.lineWidth = 2
     ctx.strokeStyle = 'white'
     createConvexPolyPath(ctx, this.collider)
     ctx.stroke()
   }
 
-  if (DRAW_TREE) {
+  if (dbg.DRAW_TREE) {
     ctx.beginPath()
 
     ctx.lineWidth = 3

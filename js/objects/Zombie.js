@@ -1,10 +1,12 @@
 import Engine from '../Engine.js'
+import RandomTree from '../RandomTree.js'
 import Triangle from '../Triangle.js'
 import ConvexPoly from '../ConvexPoly.js'
 import { drawLife, drawTriangle, createConvexPolyPath } from '../RenderUtils.js'
 
 const DRAW_LOOK_TRI = false
 const DRAW_COLLIDER = false
+const DRAW_TREE = true
 
 const draw = function({ ctx, updates }) {
   const { x, y, rot } = this
@@ -20,6 +22,23 @@ const draw = function({ ctx, updates }) {
     ctx.lineWidth = 2
     ctx.strokeStyle = 'white'
     createConvexPolyPath(ctx, this.collider)
+    ctx.stroke()
+  }
+
+  if (DRAW_TREE) {
+    ctx.beginPath()
+
+    ctx.lineWidth = 3
+    ctx.strokeStyle = '#0f0'
+
+    const dx = this.x - this.ox
+    const dy = this.y - this.oy
+
+    for (const [x1, y1, x2, y2] of this.tree) {
+      ctx.moveTo(x1 + dx, y1 + dy)
+      ctx.lineTo(x2 + dx, y2 + dy)
+    }
+
     ctx.stroke()
   }
 }
@@ -65,6 +84,8 @@ const update = function(eng) {
   this.x += d * Math.cos(rot)
   this.y += d * Math.sin(rot)
 
+  this.updateTree()
+
   ConvexPoly.translate(this.collider, this.x, this.y)
 
   this.updateLookTri(x, y, rot)
@@ -77,14 +98,28 @@ const update = function(eng) {
   }
 }
 
+const updateTree = function() {
+  if (this.tree) {
+    return
+  }
+
+  this.tree = RandomTree.getLineSegments(
+    RandomTree.buildTree(this.x, this.y, 4)
+  )
+}
+
 export default (x, y) => ({
   x,
   y,
+  ox: x,
+  oy: y,
   collider: ConvexPoly.regular(x, y, 20, 6),
   rot: Math.random() * 2 * Math.PI,
   look: null,
   updateLookTri,
   aggro: false,
+  tree: null,
+  updateTree,
   draw,
   update
 })

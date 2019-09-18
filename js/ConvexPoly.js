@@ -73,7 +73,7 @@ const intersects = (poly1, poly2) => {
   return false
 }
 
-const translate = (poly, x, y) => {
+const moveTo = (poly, x, y) => {
   const dx = x - poly.x
   const dy = y - poly.y
 
@@ -85,9 +85,12 @@ const translate = (poly, x, y) => {
     poly.vertices[i][1] += dy
   }
 
-  for (let i = 0; i < poly.tris.length; i++) {
-    Triangle.translate(poly.tris[i], dx, dy)
-  }
+  poly.tris = _triangulate(poly.vertices)
+
+  // TODO: fix Triangle.translate?
+  //for (let i = 0; i < poly.tris.length; i++) {
+    //Triangle.translate(poly.tris[i], dx, dy)
+  //}
 }
 
 export default {
@@ -95,5 +98,5 @@ export default {
   regular,
   contains,
   intersects,
-  translate
+  moveTo
 }

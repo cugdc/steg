@@ -28,7 +28,7 @@ const update = function(eng) {
   this.x += this.speed * Math.cos(this.rot)
   this.y += this.speed * Math.sin(this.rot)
 
-  ConvexPoly.translate(this.collider, this.x, this.y)
+  ConvexPoly.moveTo(this.collider, this.x, this.y)
 }
 
 const onMouseMove = function(eng, x, y) {

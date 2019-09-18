@@ -92,7 +92,7 @@ const update = function(eng) {
 
   this.updateTree()
 
-  ConvexPoly.translate(this.collider, this.x, this.y)
+  ConvexPoly.moveTo(this.collider, this.x, this.y)
 
   this.updateLookTri(x, y, rot)
 

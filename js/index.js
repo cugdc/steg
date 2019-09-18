@@ -44,6 +44,18 @@ const drawSuspensionGraphic = (ctx) => {
   ctx.fillText(message, oX, oY + height)
 }
 
+const getEnginePos = (eng, clientX, clientY) => {
+  const canvasBounds = canvas.getBoundingClientRect()
+
+  let x = clientX - canvasBounds.left
+  let y = clientY - canvasBounds.top
+
+  x *= eng.width / canvas.width
+  y *= eng.height / canvas.height
+
+  return [x, y]
+}
+
 Impl.onPreInit()
 
 document.addEventListener('keyup', ({code}) => {
@@ -68,15 +80,26 @@ canvas.addEventListener('mousemove', ({ clientX, clientY }) => {
     return
   }
 
-  const canvasBounds = canvas.getBoundingClientRect()
-
-  let x = clientX - canvasBounds.left
-  let y = clientY - canvasBounds.top
-
-  x *= eng.width / canvas.width
-  y *= eng.height / canvas.height
-
+  const [x, y] = getEnginePos(eng, clientX, clientY)
   Engine.onMouseMove(eng, x, y)
+})
+
+canvas.addEventListener('mousedown', ({ clientX, clientY }) => {
+  if (eng.suspended) {
+    return
+  }
+
+  const [x, y] = getEnginePos(eng, clientX, clientY)
+  Engine.onMouseDown(eng, x, y)
+})
+
+canvas.addEventListener('mouseup', ({ clientX, clientY }) => {
+  if (eng.suspended) {
+    return
+  }
+
+  const [x, y] = getEnginePos(eng, clientX, clientY)
+  Engine.onMouseUp(eng, x, y)
 })
 
 Impl.start(eng)

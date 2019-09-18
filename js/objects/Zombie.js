@@ -4,6 +4,7 @@ import ConvexPoly from '../ConvexPoly.js'
 import { drawLife, drawTriangle, createConvexPolyPath } from '../RenderUtils.js'
 
 const DRAW_LOOK_TRI = false
+const DRAW_COLLIDER = false
 
 const draw = function({ ctx, updates }) {
   const { x, y, rot } = this
@@ -15,10 +16,12 @@ const draw = function({ ctx, updates }) {
 
   drawLife(ctx, x, y, rot, '#9cc', '#200', () => this.aggro)
 
-  ctx.lineWidth = 2
-  ctx.strokeStyle = 'white'
-  createConvexPolyPath(ctx, this.collider)
-  ctx.stroke()
+  if (DRAW_COLLIDER) {
+    ctx.lineWidth = 2
+    ctx.strokeStyle = 'white'
+    createConvexPolyPath(ctx, this.collider)
+    ctx.stroke()
+  }
 }
 
 const createLookTri = (x, y, rot) => {

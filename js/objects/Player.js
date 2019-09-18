@@ -1,14 +1,23 @@
 import ConvexPoly from '../ConvexPoly.js'
 import { drawLife, createConvexPolyPath } from '../RenderUtils.js'
 
+const DRAW_COLLIDER = false
+
 const draw = function({ ctx }) {
   drawLife(ctx, this.x, this.y, this.rot, '#b42', '#9299')
 
-  ctx.lineWidth = 2
-  ctx.strokeStyle = this.collides == 'boulder' ? 'green' : this.collides == false ? 'white' : 'orange'
-  createConvexPolyPath(ctx, this.collider)
-  ctx.stroke()
+  if (DRAW_COLLIDER) {
+    ctx.lineWidth = 2
+    ctx.strokeStyle = (this.collides && this.collides.startsWith('boulder')) ?
+      'green' :
+      (this.collides ? 'orange' : 'white')
+
+    createConvexPolyPath(ctx, this.collider)
+    ctx.stroke()
+  }
+
   this.collides = false // TODO: hack, needs a postUpdate() or postDraw() function...
+                        // Can't write this in update()
 }
 
 const update = function(eng) {
@@ -19,7 +28,7 @@ const update = function(eng) {
   ConvexPoly.translate(this.collider, this.x, this.y)
 }
 
-const onMouseMove = function(x, y) {
+const onMouseMove = function(eng, x, y) {
   this.rot = Math.atan2(y - this.y, x - this.x)
 }
 

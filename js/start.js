@@ -60,14 +60,22 @@ export const start = (eng) => {
 const initializeGame = eng => {
   Engine.removeObject(eng, 'launch-screen')
 
-  let i = 10
-  while (i --> 0) {
-    Engine.addObject(eng, Zombie(eng.width / 2 + i * 10 - 50, eng.height / 2 + i * 10 - 50))
-  }
+  // TODO add z-index so add order doesn't matter
 
-  Engine.addObject(eng, Player(eng.width / 2, eng.height / 2), 'player')
   Engine.addObject(eng, Crosshair(eng.width / 2, eng.height / 2), 'crosshair')
 
+  // XXX need better way to hide player from collisions...
+  Engine.addObject(eng, Player(-100000, -100000), 'player')
 
-  Engine.addObject(eng, Boulder(200, 200, 50, 8), 'boulder')
+  const zx = eng.width / 4 + Math.random() * eng.width / 2
+  const zy = eng.height / 4 + Math.random() * eng.height / 2
+
+
+  for (let i = 0; i < 10; i++) {
+    const bx = eng.width * Math.random()
+    const by = eng.height * Math.random()
+    const radius = 15 + 30 * Math.random()
+    const vertices = Math.floor(10 + 16 * Math.random())
+    Engine.addObject(eng, Boulder(bx, by, radius, vertices), 'boulder-' + i)
+  }
 }

@@ -19,8 +19,9 @@ const create = (canvas, width, height) => ({
 const getObject = (eng, id) => (eng.objs.find(o => o.$eng$id == id))
 
 const addObject = (eng, obj, id) => {
-  obj.$eng$id = id
-  eng.objs.push(obj)
+  // XXX hack: let's do better than using Math.random() for random id's
+  obj.$eng$id = id || (Math.random() + '.eng-gen-id')
+  eng.objs = [obj, ...eng.objs]
 }
 
 const removeObject = (eng, id) => {
@@ -36,7 +37,15 @@ const onKeyDown = (eng, code) => {
 }
 
 const onMouseMove = (eng, x, y) => {
-  eng.objs.filter(o => !!o.onMouseMove).forEach(o => o.onMouseMove(x, y))
+  eng.objs.filter(o => !!o.onMouseMove).forEach(o => o.onMouseMove(eng, x, y))
+}
+
+const onMouseDown = (eng, x, y) => {
+  eng.objs.filter(o => !!o.onMouseDown).forEach(o => o.onMouseDown(eng, x, y))
+}
+
+const onMouseUp = (eng, x, y) => {
+  eng.objs.filter(o => !!o.onMouseUp).forEach(o => o.onMouseUp(eng, x, y))
 }
 
 const addKeyUpListener = (eng, listener) => {
@@ -45,6 +54,25 @@ const addKeyUpListener = (eng, listener) => {
 
 const addKeyDownListener = (eng, listener) => {
   eng.listeners.keyDown.push(listener)
+}
+
+const intersectsAnyCollider = (eng, x, y) => {
+  const colliders = eng.objs.reduce((acc, o) => (o.collider ? [o.collider, ...acc] : acc), [])
+
+  for (const c of colliders) {
+    const dx = c.x - x
+    const dy = c.y - y
+    const dist = Math.sqrt(dx * dx + dy * dy)
+
+    // dist - rad > 0 implies outside of collider's "circle"
+    if (dist - c.radius <= 0) {
+      if (ConvexPoly.contains(c, [x, y])) {
+        return true
+      }
+    }
+  }
+
+  return false
 }
 
 const drawFrame = (eng) => {
@@ -136,8 +164,11 @@ export default {
   onKeyUp,
   onKeyDown,
   onMouseMove,
+  onMouseDown,
+  onMouseUp,
   addKeyUpListener,
   addKeyDownListener,
+  intersectsAnyCollider,
   drawFrame,
   suspend,
   resume

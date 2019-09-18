@@ -24,7 +24,7 @@ const draw = function({ ctx, updates }) {
   }
 }
 
-const createLookTri = (x, y, rot) => {
+const updateLookTri = function(x, y, rot) {
   /*         p
            / |
     (x,y) /  | m (straight-forward distance
@@ -33,7 +33,11 @@ const createLookTri = (x, y, rot) => {
              q
     w = ang m*p
     (image where rot = 0 rad)
-  */
+    */
+
+  if (!this.look) {
+    this.look = Triangle.create()
+  }
 
   const w = Math.PI / 10
   const m = 100
@@ -45,7 +49,9 @@ const createLookTri = (x, y, rot) => {
   const qx = x + d * Math.cos(rot - w)
   const qy = y + d * Math.sin(rot - w)
 
-  return Triangle.create([x, y], [px, py], [qx, qy])
+  this.look.a = [x, y]
+  this.look.b = [px, py]
+  this.look.c = [qx, qy]
 }
 
 const update = function(eng) {
@@ -61,7 +67,7 @@ const update = function(eng) {
 
   ConvexPoly.translate(this.collider, this.x, this.y)
 
-  this.look = createLookTri(x, y, rot)
+  this.updateLookTri(x, y, rot)
 
   const player = Engine.getObject(eng, 'player')
   this.aggro = Triangle.contains(this.look, [player.x, player.y], 0.05)
@@ -75,8 +81,9 @@ export default (x, y) => ({
   x,
   y,
   collider: ConvexPoly.regular(x, y, 20, 6),
-  rot: Math.random() * 2*Math.PI,
+  rot: Math.random() * 2 * Math.PI,
   look: null,
+  updateLookTri,
   aggro: false,
   draw,
   update

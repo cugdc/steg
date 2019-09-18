@@ -85,8 +85,9 @@ const translate = (poly, x, y) => {
     poly.vertices[i][1] += dy
   }
 
-  // TODO slow?
-  poly.tris = _triangulate(poly.vertices)
+  for (let i = 0; i < poly.tris.length; i++) {
+    Triangle.translate(poly.tris[i], dx, dy)
+  }
 }
 
 export default {

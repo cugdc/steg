@@ -1,6 +1,6 @@
-# Zombruh
+# Steg
 
-A human vs zombies game.
+A game of steganography.
 
 Launch in your browser:
 

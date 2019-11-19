@@ -1,0 +1,19 @@
+{
+  "name": "steg",
+  "version": "1.0.0",
+  "description": "A game of steganography",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CU-Boulder-Game-Dev/steg.git"
+  },
+  "author": "CU Boulder Game Dev Club",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CU-Boulder-Game-Dev/steg/issues"
+  },
+  "homepage": "https://github.com/CU-Boulder-Game-Dev/steg#readme"
+}

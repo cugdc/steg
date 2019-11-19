@@ -1,19 +1,26 @@
 {
   "name": "steg",
-  "version": "1.0.0",
+  "author": "CU Boulder Game Dev Club",
   "description": "A game of steganography",
+  "version": "1.0.0",
+  "license": "MIT",
+  "homepage": "https://github.com/CU-Boulder-Game-Dev/steg#readme",
   "main": "index.js",
   "scripts": {
+    "clean": "rm dist/bundle.js",
+    "build": "parcel build src/index.html",
+    "dev": "parcel src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CU-Boulder-Game-Dev/steg.git"
   },
-  "author": "CU Boulder Game Dev Club",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/CU-Boulder-Game-Dev/steg/issues"
-  },
-  "homepage": "https://github.com/CU-Boulder-Game-Dev/steg#readme"
+  }
 }

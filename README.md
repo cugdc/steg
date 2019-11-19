@@ -1,11 +1,17 @@
 # Steg
 
-A game of steganography.
+A game of steganography.  
+CU Boulder Game Dev Club 2019/2020 collaborative project.  
+MIT licensed.
 
-Launch in your browser:
+Build & run it:
 
 ```bash
-python3 -m http.server
+npm run dev
 ```
 
-Navigate to [localhost:8000](http://localhost:8000).
+Pre-reqs:
+
+* An up-to-date version of NodeJS;
+* the Parcel bundler: `npm install -g parcel-bundler`; and
+* a brain 🧠!

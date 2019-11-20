@@ -7,9 +7,10 @@
   "homepage": "https://github.com/CU-Boulder-Game-Dev/steg#readme",
   "main": "index.js",
   "scripts": {
-    "clean": "rm dist/bundle.js",
-    "build": "parcel build src/index.html",
-    "dev": "parcel src/index.html",
+    "clean": "rm -r dist",
+    "build-prod": "parcel build src/index.html --public-url ./",
+    "start": "parcel serve src/index.html",
+    "watch": "parcel watch src/*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {},

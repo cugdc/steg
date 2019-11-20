@@ -23,10 +23,6 @@ export const onPreInit = () => {
   document.getElementById('dbg-zombie-cone').onclick = e => {
     dbgToggle('DRAW_LOOK_TRI')
   }
-
-  document.getElementById('dbg-zombie-tree').onclick = e => {
-    dbgToggle('DRAW_TREE')
-  }
 }
 
 let initialized

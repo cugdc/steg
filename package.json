@@ -3,19 +3,20 @@
   "author": "CU Boulder Game Dev Club",
   "description": "A game of steganography",
   "version": "1.0.0",
+  "private": true,
   "license": "MIT",
   "homepage": "https://github.com/CU-Boulder-Game-Dev/steg#readme",
-  "main": "index.js",
   "scripts": {
     "clean": "rm -r dist",
-    "build-prod": "parcel build src/index.html --public-url ./",
-    "start": "parcel serve src/index.html",
-    "watch": "parcel watch src/*",
+    "build": "webpack",
+    "watch": "webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {},
   "devDependencies": {
-    "parcel-bundler": "^1.12.4"
+    "clean-webpack-plugin": "^3.0.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
   },
   "repository": {
     "type": "git",

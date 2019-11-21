@@ -5,7 +5,7 @@ import { drawLife, drawTriangle, createConvexPolyPath } from '../RenderUtils.js'
 
 let dbg = {
   DRAW_LOOK_TRI: false,
-  DRAW_COLLIDER: false,
+  DRAW_COLLIDER: false
 }
 
 export const dbgToggle = prop => {

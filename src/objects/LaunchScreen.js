@@ -1,18 +1,18 @@
 const blend = (c1, c2, bias) => {
-  const c1_r = (c1 & 0xff0000) >> 16;
-  const c2_r = (c2 & 0xff0000) >> 16;
-  const c1_g = (c1 & 0xff00) >> 8;
-  const c2_g = (c2 & 0xff00) >> 8;
-  const c1_b = c1 & 0xff;
-  const c2_b = c2 & 0xff;
+  const c1_r = (c1 & 0xff0000) >> 16
+  const c2_r = (c2 & 0xff0000) >> 16
+  const c1_g = (c1 & 0xff00) >> 8
+  const c2_g = (c2 & 0xff00) >> 8
+  const c1_b = c1 & 0xff
+  const c2_b = c2 & 0xff
 
-  const opa = (1 - bias) / 2;
+  const opa = (1 - bias) / 2
 
-  const r = Math.floor(c1_r * opa + c2_r * (1 - opa));
-  const g = Math.floor(c1_g * opa + c2_g * (1 - opa));
-  const b = Math.floor(c1_b * opa + c2_b * (1 - opa));
+  const r = Math.floor(c1_r * opa + c2_r * (1 - opa))
+  const g = Math.floor(c1_g * opa + c2_g * (1 - opa))
+  const b = Math.floor(c1_b * opa + c2_b * (1 - opa))
 
-  return (0xff << 24) | (r << 16) | (g << 8) | b;
+  return (0xff << 24) | (r << 16) | (g << 8) | b
 }
 
 const draw = function({ ctx, frame, width, height, updates }) {
@@ -41,7 +41,7 @@ const draw = function({ ctx, frame, width, height, updates }) {
 
   let text = 'Zombruh'
 
-  ctx.fillStyle = '#ccc' 
+  ctx.fillStyle = '#ccc'
   ctx.fillText(text, x, y)
 
   // Moving outline

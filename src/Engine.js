@@ -2,8 +2,9 @@ import ConvexPoly from './ConvexPoly.js'
 
 const create = (canvas, width, height) => ({
   suspended: false,
+  canvas,
   ctx: canvas.getContext('2d', { alpha: false }),
-  frame: { w: () => canvas.width, h: () => canvas.height },
+  //frame: { w: () => canvas.width, h: () => canvas.height }, // TODO remove this
   width,
   height,
   objs: [],
@@ -76,7 +77,7 @@ const intersectsAnyCollider = (eng, x, y) => {
 }
 
 const drawFrame = (eng) => {
-  const { ctx, frame, width, height, objs } = eng
+  const { ctx, frame, canvas, width, height, objs } = eng
 
   eng.frames++
   eng.updates++
@@ -89,10 +90,10 @@ const drawFrame = (eng) => {
   }
 
   ctx.fillStyle = '#171717'
-  ctx.fillRect(0, 0, frame.w(), frame.h())
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
 
   ctx.save()
-  ctx.scale(frame.w() / width, frame.h() / height)
+  ctx.scale(canvas.width / width, canvas.height / height)
   objs.filter(o => !!o.draw).forEach(o => {
     ctx.save()
     o.draw(eng)

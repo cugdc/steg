@@ -1,8 +1,17 @@
 import Engine from './Engine.js'
 import * as Impl from './start.js'
 
-const canvas = Impl.getCanvasElement()
-const eng = Engine.create(canvas, 500, 500)
+const eng = Impl.createEngine()
+
+/* It's in our best interests to not make eng a global variable, however
+ * often devs or testers want to interact with it in the JS console.
+ *
+ * As compromise, we can explicitly expose eng.
+ */
+window.exposeEngine = () => {
+  window.Engine = Engine // the module
+  window.eng = eng // the instance
+}
 
 let frameId
 const drawNextFrame = () => {
@@ -45,18 +54,20 @@ const drawSuspensionGraphic = (ctx) => {
 }
 
 const getEnginePos = (eng, clientX, clientY) => {
-  const canvasBounds = canvas.getBoundingClientRect()
+  const canvasBounds = eng.canvas.getBoundingClientRect()
 
   let x = clientX - canvasBounds.left
   let y = clientY - canvasBounds.top
 
-  x *= eng.width / canvas.width
-  y *= eng.height / canvas.height
+  x *= eng.width / eng.canvas.width
+  y *= eng.height / eng.canvas.height
 
   return [x, y]
 }
 
 Impl.onPreInit()
+
+/* Bind browser and canvas events to engine events. */
 
 document.addEventListener('keyup', ({code}) => {
   if (!eng.suspended) {
@@ -75,7 +86,7 @@ document.addEventListener('keydown', ({code}) => {
   }
 })
 
-canvas.addEventListener('mousemove', ({ clientX, clientY }) => {
+eng.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {
   if (eng.suspended) {
     return
   }
@@ -84,7 +95,7 @@ canvas.addEventListener('mousemove', ({ clientX, clientY }) => {
   Engine.onMouseMove(eng, x, y)
 })
 
-canvas.addEventListener('mousedown', ({ clientX, clientY }) => {
+eng.canvas.addEventListener('mousedown', ({ clientX, clientY }) => {
   if (eng.suspended) {
     return
   }
@@ -93,7 +104,7 @@ canvas.addEventListener('mousedown', ({ clientX, clientY }) => {
   Engine.onMouseDown(eng, x, y)
 })
 
-canvas.addEventListener('mouseup', ({ clientX, clientY }) => {
+eng.canvas.addEventListener('mouseup', ({ clientX, clientY }) => {
   if (eng.suspended) {
     return
   }
@@ -101,6 +112,8 @@ canvas.addEventListener('mouseup', ({ clientX, clientY }) => {
   const [x, y] = getEnginePos(eng, clientX, clientY)
   Engine.onMouseUp(eng, x, y)
 })
+
+/* Post browser/canvas binding -> engine is ready */
 
 Impl.start(eng)
 

@@ -6,21 +6,13 @@ body {
 }
 
 #game-view {
-  border: 3px solid #920;
+  border: 3px solid #300;
   cursor: none;
   margin-top: 20px;
 }
 
-#debug-ui {
-  position: fixed;
-  text-align: left;
-  top: 10px;
-  left: 10px;
-}
-
 .keybind {
-  border: 2px dashed #666;
-  border-radius: 10px;
   color: #e75;
   padding: 3px;
+  font-weight: bold;
 }

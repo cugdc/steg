@@ -14,7 +14,7 @@
   </script>
 </head>
 <body>
-  <div id="content" style="display:none;">
+  <div id="content">
     <canvas id="game-view" width="512" height="512"></canvas>
     <p>Press <span id="start-keybind" class="keybind">[unknown]</span> to start!</p>
     <div id="debug-ui">
@@ -25,20 +25,10 @@
         <option value="1024">1024x1024 (2x)</option>
         <option value="2048">2048x2048 (4x)</option>
       </select>
-      <br>
-      <input type="checkbox" id="dbg-player-coll">Player Collider</input>
-      <br>
-      <input type="checkbox" id="dbg-zombie-coll">Zombie Collider</input>
-      <br>
-      <input type="checkbox" id="dbg-zombie-cone">Zombie View Cone</input>
-      <br>
-      <input type="checkbox" id="dbg-zombie-tree">Zombie Path Tree</input>
     </div>
     <br>
   </div>
 
-  <!-- Load at end to ensure canvas is not null (required when Parcel packs it
-    all up...) -->
   <script src="./dist/bundle.js"></script>
 </body>
 </html>

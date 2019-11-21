@@ -4,14 +4,16 @@ A game of steganography.
 CU Boulder Game Dev Club 2019/2020 collaborative project.  
 MIT licensed.
 
-Build & run it:
+## Build locally
 
 ```bash
-npm run dev
+npm install
+npm run watch
 ```
 
-Pre-reqs:
+Then open `index.html` in your browser and start hacking.
 
-* An up-to-date version of NodeJS;
-* the Parcel bundler: `npm install -g parcel-bundler`; and
-* a brain 🧠!
+## Pre-reqs
+
+* An up-to-date version of Node
+* A brain 🧠!

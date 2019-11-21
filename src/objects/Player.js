@@ -11,16 +11,19 @@ const draw = function({ ctx }) {
 
   if (dbg.DRAW_COLLIDER) {
     ctx.lineWidth = 2
-    ctx.strokeStyle = (this.collides && this.collides.startsWith('boulder')) ?
-      'green' :
-      (this.collides ? 'orange' : 'white')
+    ctx.strokeStyle =
+      this.collides && this.collides.startsWith('boulder')
+        ? 'green'
+        : this.collides
+        ? 'orange'
+        : 'white'
 
     createConvexPolyPath(ctx, this.collider)
     ctx.stroke()
   }
 
   this.collides = false // TODO: hack, needs a postUpdate() or postDraw() function...
-                        // Can't write this in update()
+  // Can't write this in update()
 }
 
 const update = function(eng) {
@@ -44,7 +47,7 @@ const setRotSpeed = function(speed) {
 }
 
 const onCollision = function(what) {
-  this.collides = what.$eng$id// TODO remove
+  this.collides = what.$eng$id // TODO remove
 }
 
 export default (x, y) => ({

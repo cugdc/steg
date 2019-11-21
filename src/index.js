@@ -34,7 +34,7 @@ const toggleEngineSuspension = () => {
   }
 }
 
-const drawSuspensionGraphic = (ctx) => {
+const drawSuspensionGraphic = ctx => {
   const message = 'Suspended'
 
   ctx.font = 'italic bold 32px Arial'
@@ -69,13 +69,13 @@ Impl.onPreInit()
 
 /* Bind browser and canvas events to engine events. */
 
-document.addEventListener('keyup', ({code}) => {
+document.addEventListener('keyup', ({ code }) => {
   if (!eng.suspended) {
     Engine.onKeyUp(eng, code)
   }
 })
 
-document.addEventListener('keydown', ({code}) => {
+document.addEventListener('keydown', ({ code }) => {
   if (code == 'Escape') {
     toggleEngineSuspension()
     return

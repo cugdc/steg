@@ -25,7 +25,7 @@ const random = (x, y, r, n) => {
 
 const regular = (x, y, r, n) => {
   const vertices = []
-  const step = 2 * Math.PI / n
+  const step = (2 * Math.PI) / n
 
   for (let i = n - 1; i >= 0; i--) {
     const vx = x + r * Math.cos(step * i)
@@ -53,9 +53,8 @@ const _triangulate = poly => {
   return tris
 }
 
-const contains = (poly, point) => (
+const contains = (poly, point) =>
   poly.tris.some(t => Triangle.contains(t, point, 0.05))
-)
 
 const intersects = (poly1, poly2) => {
   for (const v of poly1.vertices) {
@@ -89,7 +88,7 @@ const moveTo = (poly, x, y) => {
 
   // TODO: fix Triangle.translate?
   //for (let i = 0; i < poly.tris.length; i++) {
-    //Triangle.translate(poly.tris[i], dx, dy)
+  //Triangle.translate(poly.tris[i], dx, dy)
   //}
 }
 

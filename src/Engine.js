@@ -17,16 +17,16 @@ const create = (canvas, width, height) => ({
   updates: 0
 })
 
-const getObject = (eng, id) => (eng.objs.find(o => o.$eng$id == id))
+const getObject = (eng, id) => eng.objs.find(o => o.$eng$id == id)
 
 const addObject = (eng, obj, id) => {
   // XXX hack: let's do better than using Math.random() for random id's
-  obj.$eng$id = id || (Math.random() + '.eng-gen-id')
+  obj.$eng$id = id || Math.random() + '.eng-gen-id'
   eng.objs = [obj, ...eng.objs]
 }
 
 const removeObject = (eng, id) => {
-  eng.objs = eng.objs.filter(o => (o === id || o.$eng$id != id))
+  eng.objs = eng.objs.filter(o => o === id || o.$eng$id != id)
 }
 
 const onKeyUp = (eng, code) => {
@@ -58,7 +58,10 @@ const addKeyDownListener = (eng, listener) => {
 }
 
 const intersectsAnyCollider = (eng, x, y) => {
-  const colliders = eng.objs.reduce((acc, o) => (o.collider ? [o.collider, ...acc] : acc), [])
+  const colliders = eng.objs.reduce(
+    (acc, o) => (o.collider ? [o.collider, ...acc] : acc),
+    []
+  )
 
   for (const c of colliders) {
     const dx = c.x - x
@@ -76,7 +79,7 @@ const intersectsAnyCollider = (eng, x, y) => {
   return false
 }
 
-const drawFrame = (eng) => {
+const drawFrame = eng => {
   const { ctx, frame, canvas, width, height, objs } = eng
 
   eng.frames++
@@ -94,25 +97,27 @@ const drawFrame = (eng) => {
 
   ctx.save()
   ctx.scale(canvas.width / width, canvas.height / height)
-  objs.filter(o => !!o.draw).forEach(o => {
-    ctx.save()
-    o.draw(eng)
-    ctx.restore()
-  })
+  objs
+    .filter(o => !!o.draw)
+    .forEach(o => {
+      ctx.save()
+      o.draw(eng)
+      ctx.restore()
+    })
   ctx.restore()
 
   eng.elapsed = Date.now() - eng._epoch
 }
 
-const suspend = (eng) => {
+const suspend = eng => {
   eng.suspended = true
 }
 
-const resume = (eng) => {
+const resume = eng => {
   eng.suspended = false
 }
 
-const _checkCollisions = (eng) => {
+const _checkCollisions = eng => {
   for (let i = 0; i < eng.objs.length; i++) {
     const o1 = eng.objs[i]
     if (!o1.collider) {

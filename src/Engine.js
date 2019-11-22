@@ -56,6 +56,11 @@ export default class Engine {
     this.listeners.keyDown.push(listener)
   }
 
+  resizeCanvas(width, height) {
+    this.canvas.width = width
+    this.canvas.height = height
+  }
+
   drawFrame() {
     const { ctx, canvas, width, height, objs } = this
 

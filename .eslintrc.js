@@ -8,7 +8,8 @@ module.exports = {
   "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "globals": {
     "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
+    "SharedArrayBuffer": "readonly",
+    "eng": "readonly"
   },
   "parserOptions": {
     "ecmaVersion": 2018,

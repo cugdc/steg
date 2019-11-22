@@ -21,6 +21,7 @@
     "eslint-plugin-prettier": "^3.1.1",
     "husky": "^3.1.0",
     "lint-staged": "^9.4.3",
+    "open": "^7.0.0",
     "prettier": "^1.19.1",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
@@ -47,5 +48,6 @@
       "prettier --write",
       "git add"
     ]
-  }
+  },
+  "dependencies": {}
 }

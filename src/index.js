@@ -1,30 +1,24 @@
-import Engine from './Engine.js'
-import * as Impl from './start.js'
+import Engine from './Engine'
+import * as Impl from './start'
 
-const eng = Impl.createEngine()
-
-/* It's in our best interests to not make eng a global variable, however
- * often devs or testers want to interact with it in the JS console.
- *
- * As compromise, we can explicitly expose eng.
- */
-window.exposeEngine = () => {
-  window.Engine = Engine // the module
-  window.eng = eng // the instance
+/* Create and globally expose the singleton engine */
+{
+  const { canvas, width, height } = Impl.getEngineConfig()
+  window.eng = new Engine(canvas, width, height)
 }
 
 let frameId
 const drawNextFrame = () => {
-  Engine.drawFrame(eng)
+  eng.drawFrame()
   frameId = window.requestAnimationFrame(drawNextFrame)
 }
 
 const toggleEngineSuspension = () => {
   if (eng.suspended) {
-    Engine.resume(eng)
+    eng.resume()
     drawNextFrame()
   } else {
-    Engine.suspend(eng)
+    eng.suspend()
 
     eng.ctx.save()
     drawSuspensionGraphic(eng.ctx)
@@ -53,7 +47,7 @@ const drawSuspensionGraphic = ctx => {
   ctx.fillText(message, oX, oY + height)
 }
 
-const getEnginePos = (eng, clientX, clientY) => {
+const getEnginePos = (clientX, clientY) => {
   const canvasBounds = eng.canvas.getBoundingClientRect()
 
   let x = clientX - canvasBounds.left
@@ -71,7 +65,7 @@ Impl.onPreInit()
 
 document.addEventListener('keyup', ({ code }) => {
   if (!eng.suspended) {
-    Engine.onKeyUp(eng, code)
+    eng.onKeyUp(code)
   }
 })
 
@@ -82,7 +76,7 @@ document.addEventListener('keydown', ({ code }) => {
   }
 
   if (!eng.suspended) {
-    Engine.onKeyDown(eng, (eng, code))
+    eng.onKeyDown(code)
   }
 })
 
@@ -91,8 +85,8 @@ eng.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {
     return
   }
 
-  const [x, y] = getEnginePos(eng, clientX, clientY)
-  Engine.onMouseMove(eng, x, y)
+  const [x, y] = getEnginePos(clientX, clientY)
+  eng.onMouseMove(x, y)
 })
 
 eng.canvas.addEventListener('mousedown', ({ clientX, clientY }) => {
@@ -100,8 +94,8 @@ eng.canvas.addEventListener('mousedown', ({ clientX, clientY }) => {
     return
   }
 
-  const [x, y] = getEnginePos(eng, clientX, clientY)
-  Engine.onMouseDown(eng, x, y)
+  const [x, y] = getEnginePos(clientX, clientY)
+  eng.onMouseDown(x, y)
 })
 
 eng.canvas.addEventListener('mouseup', ({ clientX, clientY }) => {
@@ -109,12 +103,12 @@ eng.canvas.addEventListener('mouseup', ({ clientX, clientY }) => {
     return
   }
 
-  const [x, y] = getEnginePos(eng, clientX, clientY)
-  Engine.onMouseUp(eng, x, y)
+  const [x, y] = getEnginePos(clientX, clientY)
+  eng.onMouseUp(x, y)
 })
 
 /* Post browser/canvas binding -> engine is ready */
 
-Impl.start(eng)
+Impl.start()
 
 drawNextFrame()

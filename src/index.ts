@@ -1,19 +1,15 @@
 import Engine from './Engine'
 import * as Impl from './start'
 
-/* Create and globally expose the singleton engine */
-{
-  const { canvas, width, height } = Impl.getEngineConfig()
-  window.eng = new Engine(canvas, width, height)
-}
+const eng: Engine = new Engine(Impl.getEngineConfig())
 
-let frameId
+let frameId: number
 const drawNextFrame = () => {
   eng.drawFrame()
   frameId = window.requestAnimationFrame(drawNextFrame)
 }
 
-const toggleEngineSuspension = () => {
+function toggleEngineSuspension(): void {
   if (eng.suspended) {
     eng.resume()
     drawNextFrame()
@@ -28,7 +24,7 @@ const toggleEngineSuspension = () => {
   }
 }
 
-const drawSuspensionGraphic = ctx => {
+function drawSuspensionGraphic(ctx: CanvasRenderingContext2D): void {
   const message = 'Suspended'
 
   ctx.font = 'italic bold 32px Arial'
@@ -47,7 +43,7 @@ const drawSuspensionGraphic = ctx => {
   ctx.fillText(message, oX, oY + height)
 }
 
-const getEnginePos = (clientX, clientY) => {
+function getEnginePos(clientX: number, clientY: number): [number, number] {
   const canvasBounds = eng.canvas.getBoundingClientRect()
 
   let x = clientX - canvasBounds.left

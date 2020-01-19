@@ -1,8 +1,11 @@
+import uuidv4 from 'uuid/v4'
+
 export type KeyListener = (key: string) => void
 export type MouseListener = (x: number, y: number) => void
+export type GameObjRef = string
 
 export interface GameObj {
-  id: string
+  ref: GameObjRef
 
   onMouseMove?: MouseListener
   onMouseDown?: MouseListener
@@ -25,7 +28,7 @@ export default class Engine {
   height: number
   canvas: HTMLCanvasElement
 
-  private objs: GameObj[]
+  private objs: Map<GameObjRef, GameObj>
   private listeners: { keyDown: KeyListener[]; keyUp: KeyListener[] }
   private frames: number
   private updates: number
@@ -37,7 +40,7 @@ export default class Engine {
     this.canvas = config.canvas
     this.width = config.width
     this.height = config.height
-    this.objs = []
+    this.objs = new Map<GameObjRef, GameObj>()
     this.listeners = {
       keyDown: [],
       keyUp: []
@@ -57,18 +60,20 @@ export default class Engine {
     }
   }
 
-  getObject(id: string): GameObj | null {
-    return this.objs.find(o => o.id == id) || null
+  getObject(ref: GameObjRef): GameObj | null {
+    return this.objs.get(ref) || null
   }
 
-  addObject(obj: GameObj, id?: string): void {
-    // FIXME: use a proper GUID instead of Math.random()
-    obj.id = id || Math.random() + '.eng-gen-id'
-    this.objs.push(obj)
+  addObject(obj: GameObj, ref?: GameObjRef): void {
+    if (!ref || !obj.ref) {
+      obj.ref = uuidv4()
+    }
+
+    this.objs.set(obj.ref, obj)
   }
 
-  removeObject(id: string): void {
-    this.objs = this.objs.filter(o => o.id != id)
+  removeObject(ref: GameObjRef): void {
+    this.objs.delete(ref)
   }
 
   onKeyUp(code: string): void {
@@ -79,9 +84,6 @@ export default class Engine {
     this.listeners.keyDown.forEach(l => l.call(null, code))
   }
 
-  // XXX: this.objs.filter(o => !!o.onMouseMove).forEach(...) was seeing
-  // the gameobj's onMouseMove fn as possibly null in the forEach lambda.
-  // (hack is to disable strictNullChecks, which we don't want to do)
   onMouseMove(x: number, y: number): void {
     this.objs.forEach(o => {
       if (o.onMouseMove) o.onMouseMove(x, y)

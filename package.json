@@ -54,5 +54,8 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "dependencies": {
+    "uuid": "^3.4.0"
   }
 }

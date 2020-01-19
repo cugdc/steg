@@ -123,20 +123,18 @@ export default class Engine {
       this.epoch = Date.now()
     }
 
-    objs.filter(o => !!o.update).forEach(o => o.update())
+    objs.forEach(o => o.update())
 
     ctx.fillStyle = '#171717'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     ctx.save()
     ctx.scale(canvas.width / width, canvas.height / height)
-    objs
-      .filter(o => !!o.draw)
-      .forEach(o => {
-        ctx.save()
-        o.draw()
-        ctx.restore()
-      })
+    objs.forEach(o => {
+      ctx.save()
+      o.draw()
+      ctx.restore()
+    })
     ctx.restore()
 
     this.elapsed = Date.now() - this.epoch

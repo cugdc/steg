@@ -1,18 +1,16 @@
 import uuidv4 from 'uuid/v4'
+import {
+  GameObj,
+  GameObjCb,
+  GameObjRef,
+  ComponentSet,
+  SystemSet,
+  createSystemSet,
+  addObjToSystems
+} from './ecs'
 
-export type KeyListener = (key: string) => void
-export type MouseListener = (x: number, y: number) => void
-export type GameObjRef = string
-
-export interface GameObj {
-  ref: GameObjRef
-
-  onMouseMove?: MouseListener
-  onMouseDown?: MouseListener
-  onMouseUp?: MouseListener
-
-  update: () => void
-  draw: () => void
+export interface KeyListener {
+  (key: string): void
 }
 
 export interface EngineConfig {
@@ -22,7 +20,11 @@ export interface EngineConfig {
 }
 
 export default class Engine {
+  static instance: Engine
+
   suspended: boolean
+
+  // TODO: can we hide these fields?
   ctx: CanvasRenderingContext2D
   width: number
   height: number
@@ -30,12 +32,17 @@ export default class Engine {
 
   private objs: Map<GameObjRef, GameObj>
   private listeners: { keyDown: KeyListener[]; keyUp: KeyListener[] }
+  private systems: SystemSet
+
+  // TODO: of these 4, which is actually needed?
   private frames: number
   private updates: number
   private elapsed: number
   private epoch?: number
 
   constructor(config: EngineConfig) {
+    Engine.instance = this
+
     this.suspended = false
     this.canvas = config.canvas
     this.width = config.width
@@ -58,17 +65,28 @@ export default class Engine {
 
       this.ctx = ctx
     }
+
+    this.systems = createSystemSet()
+  }
+
+  createObject(update: GameObjCb<void>, components?: ComponentSet): GameObj {
+    let ref = uuidv4()
+    let obj = new GameObj(ref, update)
+
+    if (components) {
+      obj.components = components
+    }
+
+    this.addObject(obj)
+    return obj
   }
 
   getObject(ref: GameObjRef): GameObj | null {
     return this.objs.get(ref) || null
   }
 
-  addObject(obj: GameObj, ref?: GameObjRef): void {
-    if (!ref || !obj.ref) {
-      obj.ref = uuidv4()
-    }
-
+  addObject(obj: GameObj): void {
+    addObjToSystems(obj, this.systems)
     this.objs.set(obj.ref, obj)
   }
 
@@ -85,21 +103,15 @@ export default class Engine {
   }
 
   onMouseMove(x: number, y: number): void {
-    this.objs.forEach(o => {
-      if (o.onMouseMove) o.onMouseMove(x, y)
-    })
+    this.systems.mouse.onMouseMove(x, y)
   }
 
   onMouseDown(x: number, y: number): void {
-    this.objs.forEach(o => {
-      if (o.onMouseDown) o.onMouseDown(x, y)
-    })
+    this.systems.mouse.onMouseDown(x, y)
   }
 
   onMouseUp(x: number, y: number): void {
-    this.objs.forEach(o => {
-      if (o.onMouseUp) o.onMouseUp(x, y)
-    })
+    this.systems.mouse.onMouseUp(x, y)
   }
 
   addKeyUpListener(listener: KeyListener): void {
@@ -115,6 +127,7 @@ export default class Engine {
     this.canvas.height = height
   }
 
+  // TODO: we gotta separate drawFrame from onUpdate
   drawFrame(): void {
     const { ctx, canvas, width, height, objs } = this
 
@@ -126,7 +139,7 @@ export default class Engine {
     }
 
     objs.forEach(o => o.update())
-
+    /* TODO: only draw Objs with component `Draw`
     ctx.fillStyle = '#171717'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
@@ -138,15 +151,7 @@ export default class Engine {
       ctx.restore()
     })
     ctx.restore()
-
+*/
     this.elapsed = Date.now() - this.epoch
-  }
-
-  suspend(): void {
-    this.suspended = true
-  }
-
-  resume(): void {
-    this.suspended = false
   }
 }

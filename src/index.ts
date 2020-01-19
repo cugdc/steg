@@ -3,6 +3,9 @@ import * as Impl from './start'
 
 const eng: Engine = new Engine(Impl.getEngineConfig())
 
+// Exposed for debugging in console. Don't use `$eng` in source code.
+;(window as any).$eng = Engine.instance
+
 let frameId: number
 const drawNextFrame = () => {
   eng.drawFrame()
@@ -11,10 +14,10 @@ const drawNextFrame = () => {
 
 function toggleEngineSuspension(): void {
   if (eng.suspended) {
-    eng.resume()
+    eng.suspended = false
     drawNextFrame()
   } else {
-    eng.suspend()
+    eng.suspended = true
 
     eng.ctx.save()
     drawSuspensionGraphic(eng.ctx)

@@ -1,4 +1,4 @@
-import { hideElement, showElement } from './dom-utils';
+import { hideElement, showElement } from './domUtils';
 
 /**
  * Each scene's DOM id is referenced here

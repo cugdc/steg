@@ -1,5 +1,5 @@
 import Scene, { switchScene } from './Scene';
-import { onClick } from './dom-utils';
+import { onClick } from './domUtils';
 
 function init() {
   switchScene(Scene.DESK);

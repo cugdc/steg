@@ -7,18 +7,6 @@
 </head>
 <body>
   <div id="content">
-    <canvas id="game-view" width="512" height="512"></canvas>
-    <p>Press <span id="start-keybind" class="keybind">[unknown]</span> to start!</p>
-    <div id="debug-ui">
-      Scale:
-      <select autocomplete="off" onchange="eng.resizeCanvas(this.value, this.value)">
-        <option value="512">512x512 (1x)</option>
-        <option value="768">768x768 (1.5x)</option>
-        <option value="1024">1024x1024 (2x)</option>
-        <option value="2048">2048x2048 (4x)</option>
-      </select>
-    </div>
-    <br>
   </div>
 
   <script src="./dist/bundle.js"></script>

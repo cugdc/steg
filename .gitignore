@@ -3,3 +3,4 @@ dist/
 built/
 .env
 .env.test
+.idea/

@@ -1,5 +1,6 @@
 import Scene, { switchScene } from './Scene';
-import { onClick } from './dom-utils';
+import { onClick } from './domUtils';
+import { generateName } from './nameGen';
 
 function init() {
   switchScene(Scene.DESK);

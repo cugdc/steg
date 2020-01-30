@@ -7,9 +7,15 @@ MIT licensed.
 Follow progress on [our Trello](https://trello.com/b/Z5izrS20/cugdc).
 
 ## Build locally
+Run these commands in your command prompt of choice
 
+Installs the dependencies the game needs (whenever the game is changed)
 ```bash
 npm install
+```
+
+Builds the game
+```bash
 npm run watch
 ```
 

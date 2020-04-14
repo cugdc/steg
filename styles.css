@@ -39,6 +39,14 @@ html, body {
   width: 500px;
 }
 
+#scene-desk .bookshelf {
+  width: 200px;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
 .scene {
   padding: 50px;
 }
